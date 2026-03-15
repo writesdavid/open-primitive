@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plaintext — Knowledge your tribe should have.</title>
+  <meta name="description" content="Government data translated into something you can use. No ads, no affiliates, no agenda. Built from love." />
+  <meta property="og:title" content="Plaintext" />
+  <meta property="og:description" content="Knowledge your tribe should have." />
+  <meta property="og:type" content="website" />
+  <style>
+    :root {
+      --bg: #09090b;
+      --surface: #111113;
+      --surface2: #18181c;
+      --border: #232328;
+      --text: #f1f1f3;
+      --muted: #6b6b80;
+      --muted2: #25252e;
+      --white: #ffffff;
+
+      /* Tool accent colors */
+      --indigo: #6366f1;
+      --steel: #5b8fa8;
+      --teal: #2dd4bf;
+      --gold: #f59e0b;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInFast {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Header ── */
+
+    header {
+      padding: 96px 0 72px;
+      animation: fadeIn 0.5s ease both;
+    }
+
+    .wordmark {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-size: clamp(48px, 8vw, 72px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .tagline {
+      font-size: clamp(15px, 2vw, 17px);
+      color: var(--muted);
+      font-weight: 400;
+      max-width: 520px;
+    }
+
+    /* ── Divider ── */
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 0 56px;
+      animation: fadeInFast 0.6s 0.2s ease both;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    /* ── Section label ── */
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 24px;
+      animation: fadeIn 0.5s 0.25s ease both;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    /* ── Tool grid ── */
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 64px;
+    }
+
+    @media (max-width: 600px) {
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px;
+      transition: border-left-color 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeIn 0.5s ease both;
+      animation-fill-mode: forwards;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.3s; }
+    .card:nth-child(2) { animation-delay: 0.38s; }
+    .card:nth-child(3) { animation-delay: 0.46s; }
+    .card:nth-child(4) { animation-delay: 0.54s; }
+
+    /* Left border accent per tool */
+    .card--indigo { border-left-color: var(--indigo); }
+    .card--steel  { border-left-color: var(--steel); }
+    .card--teal   { border-left-color: var(--teal); }
+    .card--gold   { border-left-color: var(--gold); }
+
+    .card--indigo:hover { border-left-color: #818cf8; }
+    .card--steel:hover  { border-left-color: #7cb9d9; }
+    .card--teal:hover   { border-left-color: #5eead4; }
+    .card--gold:hover   { border-left-color: #fbbf24; }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    /* Live badge */
+
+    .badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      flex-shrink: 0;
+      padding-top: 3px;
+    }
+
+    .badge-live .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--white);
+      animation: pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    .card-tagline {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+      opacity: 0.9;
+    }
+
+    .card-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 10px;
+    }
+
+    .card-tribe {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      opacity: 0.75;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      transition: gap 0.15s ease, opacity 0.15s ease;
+      opacity: 0.7;
+    }
+
+    .card-link:hover {
+      opacity: 1;
+      gap: 8px;
+    }
+
+    .card-link svg {
+      flex-shrink: 0;
+      transition: transform 0.15s ease;
+    }
+
+    .card-link:hover svg {
+      transform: translate(2px, -2px);
+    }
+
+    /* ── Philosophy ── */
+
+    .philosophy {
+      margin-bottom: 72px;
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      animation: fadeIn 0.5s 0.6s ease both;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    .philosophy p {
+      font-size: clamp(16px, 2.2vw, 19px);
+      color: var(--muted);
+      line-height: 1.85;
+      max-width: 640px;
+      margin: 0 auto 18px;
+    }
+
+    .philosophy p:last-child {
+      margin-bottom: 0;
+    }
+
+    .philosophy strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ── Footer ── */
+
+    footer {
+      padding: 24px 0 56px;
+      font-size: 13px;
+      color: var(--muted);
+      animation: fadeInFast 0.5s 0.7s ease both;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <div class="wordmark">Plaintext</div>
+      <h1>Knowledge<br>your tribe<br>should have.</h1>
+      <p class="tagline">Every community used to have people who knew things. This is them — rebuilt from public data.</p>
+    </header>
+
+    <hr class="divider" />
+
+    <p class="section-label">Tools</p>
+
+    <div class="tools-grid">
+
+      <!-- Dice Flights — LIVE -->
+      <div class="card card--indigo">
+        <div class="card-header">
+          <span class="card-title">Dice Flights</span>
+          <span class="badge-live"><span class="dot"></span>Live</span>
+        </div>
+        <p class="card-tagline">Which airline will actually get you there.</p>
+        <p class="card-desc">DOT track record, FAA live delays, hub weather, news sentiment. Eight carriers ranked.</p>
+        <p class="card-tribe">The person in your tribe who knew which roads were safe to travel.</p>
+        <a class="card-link" href="https://dice-flights.vercel.app" target="_blank" rel="noopener noreferrer">
+          Open tool
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2 11L11 2M11 2H5M11 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Car Truth -->
+      <div class="card card--steel">
+        <div class="card-header">
+          <span class="card-title">Car Truth</span>
+        </div>
+        <p class="card-tagline">Before you put your family in it.</p>
+        <p class="card-desc">NHTSA crash ratings, active recalls, safety comparison by make and model.</p>
+        <p class="card-tribe">The person who knew which tools held and which ones failed.</p>
+        <!-- TODO: update href with Vercel URL after deploy -->
+        <a class="card-link" href="https://car-truth.vercel.app" target="_blank" rel="noopener noreferrer">
+          Open tool
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2 11L11 2M11 2H5M11 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Does It Work -->
+      <div class="card card--teal">
+        <div class="card-header">
+          <span class="card-title">Does It Work</span>
+        </div>
+        <p class="card-tagline">What the research actually says.</p>
+        <p class="card-desc">PubMed evidence on supplements, diets, and health claims. No agenda. Just studies.</p>
+        <p class="card-tribe">The person who knew which plants healed and which ones didn't.</p>
+        <!-- TODO: update href with Vercel URL after deploy -->
+        <a class="card-link" href="https://does-it-work.vercel.app" target="_blank" rel="noopener noreferrer">
+          Open tool
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2 11L11 2M11 2H5M11 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- More coming -->
+      <div class="card card--gold">
+        <div class="card-header">
+          <span class="card-title">More coming</span>
+        </div>
+        <p class="card-tagline">Hospital quality. Water safety. Drug interactions.</p>
+        <p class="card-desc">All public data. All free. All honest.</p>
+        <p class="card-tribe">The rest of the people your tribe used to have.</p>
+      </div>
+
+    </div>
+
+    <!-- Philosophy -->
+    <div class="philosophy">
+      <p>Every community used to have people who knew things. Which plants healed. Which roads were safe. What to eat through winter. That knowledge passed between people who loved each other. It didn't come with a subscription fee or an ad.</p>
+      <p>We've lost most of those people. What we have instead is <strong>government databases nobody knows how to read</strong> — detailed, honest, public data about the things that matter most to your family. Airlines. Cars. Hospitals. Water. Drugs.</p>
+      <p>Plaintext translates them. <strong>No ads. No affiliates. No agenda.</strong> Just the knowledge your tribe should have.</p>
+    </div>
+
+    <footer>Plaintext. Built by David Hamilton.</footer>
+
+  </div>
+</body>
+</html>
