@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Open Primitive — The public record, made readable.</title>
-  <meta name="description" content="Primary source data on the decisions that matter. No ads, no affiliates, no agenda. The information was always public. Now it's readable." />
+  <meta name="description" content="You are outsourcing the decisions that matter to a system trained to sound right. Some things you should read yourself." />
   <meta property="og:title" content="Open Primitive" />
-  <meta property="og:description" content="The public record, made readable." />
+  <meta property="og:description" content="You are outsourcing the decisions that matter to a system trained to sound right. Some things you should read yourself." />
   <meta property="og:type" content="website" />
   <style>
     :root {
@@ -48,24 +48,18 @@
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes fadeInFast {
       from { opacity: 0; }
-      to { opacity: 1; }
+      to   { opacity: 1; }
     }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.4); }
+      50%       { opacity: 0.5; transform: scale(1.4); }
     }
 
     .page {
@@ -103,7 +97,8 @@
       font-size: clamp(15px, 2vw, 17px);
       color: var(--muted);
       font-weight: 400;
-      max-width: 520px;
+      max-width: 560px;
+      line-height: 1.7;
     }
 
     /* ── Divider ── */
@@ -141,9 +136,7 @@
     }
 
     @media (max-width: 600px) {
-      .tools-grid {
-        grid-template-columns: 1fr;
-      }
+      .tools-grid { grid-template-columns: 1fr; }
     }
 
     .card {
@@ -165,7 +158,6 @@
     .card:nth-child(3) { animation-delay: 0.46s; }
     .card:nth-child(4) { animation-delay: 0.54s; }
 
-    /* Left border accent per tool */
     .card--indigo { border-left-color: var(--indigo); }
     .card--steel  { border-left-color: var(--steel); }
     .card--teal   { border-left-color: var(--teal); }
@@ -190,8 +182,6 @@
       letter-spacing: -0.02em;
       color: var(--text);
     }
-
-    /* Live badge */
 
     .badge-live {
       display: inline-flex;
@@ -251,48 +241,41 @@
       opacity: 0.7;
     }
 
-    .card-link:hover {
-      opacity: 1;
-      gap: 8px;
-    }
+    .card-link:hover { opacity: 1; gap: 8px; }
 
-    .card-link svg {
-      flex-shrink: 0;
-      transition: transform 0.15s ease;
-    }
-
-    .card-link:hover svg {
-      transform: translate(2px, -2px);
-    }
+    .card-link svg { flex-shrink: 0; transition: transform 0.15s ease; }
+    .card-link:hover svg { transform: translate(2px, -2px); }
 
     /* ── Philosophy ── */
 
     .philosophy {
       margin-bottom: 72px;
-      padding: 40px 0;
+      padding: 48px 0;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      text-align: center;
       animation: fadeIn 0.5s 0.6s ease both;
       opacity: 0;
       animation-fill-mode: forwards;
     }
 
     .philosophy p {
-      font-size: clamp(16px, 2.2vw, 19px);
+      font-size: clamp(15px, 2vw, 17px);
       color: var(--muted);
-      line-height: 1.85;
-      max-width: 640px;
-      margin: 0 auto 18px;
+      line-height: 1.9;
+      max-width: 680px;
+      margin-bottom: 20px;
     }
 
-    .philosophy p:last-child {
-      margin-bottom: 0;
-    }
+    .philosophy p:last-child { margin-bottom: 0; }
 
     .philosophy strong {
       color: var(--text);
       font-weight: 600;
+    }
+
+    .philosophy em {
+      color: var(--text);
+      font-style: normal;
     }
 
     /* ── Footer ── */
@@ -301,9 +284,24 @@
       padding: 24px 0 56px;
       font-size: 13px;
       color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 20px;
       animation: fadeInFast 0.5s 0.7s ease both;
       opacity: 0;
       animation-fill-mode: forwards;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    footer a:hover { color: var(--text); }
+
+    .footer-sep {
+      opacity: 0.3;
     }
   </style>
 </head>
@@ -312,8 +310,8 @@
 
     <header>
       <div class="wordmark">Open Primitive</div>
-      <h1>The public record,<br>made readable.</h1>
-      <p class="tagline">Google had the mission. They traded it for ad revenue. AI has the confidence. It doesn't have the sources. This does.</p>
+      <h1>Some things you<br>should read yourself.</h1>
+      <p class="tagline">AI will tell you the car passed. It won't show you the crash tests. It will summarize the research. It won't show you who funded it. You are outsourcing the decisions that matter to a system trained to sound right.</p>
     </header>
 
     <hr class="divider" />
@@ -322,7 +320,6 @@
 
     <div class="tools-grid">
 
-      <!-- Dice Flights — LIVE -->
       <div class="card card--indigo">
         <div class="card-header">
           <span class="card-title">Dice Flights</span>
@@ -339,7 +336,6 @@
         </a>
       </div>
 
-      <!-- Car Truth -->
       <div class="card card--steel">
         <div class="card-header">
           <span class="card-title">Car Truth</span>
@@ -347,7 +343,6 @@
         <p class="card-tagline">Before you put your family in it.</p>
         <p class="card-desc">NHTSA crash ratings, active recalls, safety comparison by make and model.</p>
         <p class="card-tribe">NHTSA records every crash and every recall. We just make it readable.</p>
-        <!-- TODO: update href with Vercel URL after deploy -->
         <a class="card-link" href="https://car-truth.vercel.app" target="_blank" rel="noopener noreferrer">
           Open tool
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -356,7 +351,6 @@
         </a>
       </div>
 
-      <!-- Does It Work -->
       <div class="card card--teal">
         <div class="card-header">
           <span class="card-title">Does It Work</span>
@@ -364,7 +358,6 @@
         <p class="card-tagline">What the research actually says.</p>
         <p class="card-desc">PubMed evidence on supplements, diets, and health claims. No agenda. Just studies.</p>
         <p class="card-tribe">PubMed indexes every study. We just make it readable.</p>
-        <!-- TODO: update href with Vercel URL after deploy -->
         <a class="card-link" href="https://does-it-work-eta.vercel.app" target="_blank" rel="noopener noreferrer">
           Open tool
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -373,7 +366,6 @@
         </a>
       </div>
 
-      <!-- More coming -->
       <div class="card card--gold">
         <div class="card-header">
           <span class="card-title">More coming</span>
@@ -385,14 +377,21 @@
 
     </div>
 
-    <!-- Philosophy -->
     <div class="philosophy">
-      <p>Google set out to organize the world's information and make it universally accessible and useful. Then they discovered advertising. What we have now is a search index optimized for engagement, not accuracy — and AI that synthesizes it all into confident answers with no citations and no accountability.</p>
-      <p>The public record was never the problem. The DOT publishes every flight delay. NHTSA records every crash. PubMed indexes every published study. CMS tracks every hospital. <strong>It was always there.</strong></p>
-      <p>Nobody made it readable. Open Primitive does. <strong>No ads. No affiliates. No agenda.</strong> Primary sources. The actual record.</p>
+      <p>Something is being lost quietly.</p>
+      <p>You ask an AI whether a supplement works. It answers. It sounds authoritative. It references no study you can verify, no number you can check. The actual record — 23 clinical trials, two meta-analyses, four industry-funded studies that should disqualify them — becomes one sentence. <strong>You accepted the sentence.</strong></p>
+      <p>The data exists. It has always existed. The DOT publishes every flight delay, indexed and time-stamped. NHTSA files every crash, every recall, every fatality investigation. PubMed holds every study, including the ones that contradict the answer you just got.</p>
+      <p>But you didn't get the record. <strong>You got a translation.</strong> And something in the original doesn't survive the trip.</p>
+      <p>An AI translation isn't neutral. It is trained on what humans found interesting, which is not the same as what is true. It smooths contradiction. It presents confidence where the record shows conflict. It cannot tell you what it doesn't know, so it doesn't.</p>
+      <p>Some decisions shouldn't be filtered. Not the ones where you're putting your family in a car. Not the ones where you're picking an airline through a storm. Not the ones where a doctor already told you something and you need to know if the research agrees.</p>
+      <p><em>Open Primitive doesn't translate. It shows you the record. You read it. You decide.</em></p>
     </div>
 
-    <footer>Open Primitive. Built by David Hamilton.</footer>
+    <footer>
+      Open Primitive. Built by David Hamilton.
+      <span class="footer-sep">·</span>
+      <a href="/manifesto.html">Why this exists</a>
+    </footer>
 
   </div>
 </body>

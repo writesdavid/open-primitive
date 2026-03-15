@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why This Exists — Open Primitive</title>
+  <meta name="description" content="A case for decision-oriented interfaces to US federal primary-source data. On search, AI, and what gets lost in translation." />
+  <style>
+    :root {
+      --bg: #09090b;
+      --surface: #111113;
+      --border: #232328;
+      --text: #f1f1f3;
+      --muted: #6b6b80;
+      --white: #ffffff;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      padding: 40px 0 0;
+    }
+
+    nav a {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    header {
+      padding: 64px 0 48px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 56px;
+    }
+
+    .kicker {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    /* ── Body ── */
+
+    .body-text h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 56px 0 20px;
+    }
+
+    .body-text h2:first-child {
+      margin-top: 0;
+    }
+
+    .body-text p {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 22px;
+    }
+
+    .body-text p strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .body-text p em {
+      color: var(--text);
+      font-style: normal;
+    }
+
+    .body-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Pull quote */
+    .pull {
+      border-left: 2px solid var(--border);
+      padding: 4px 0 4px 24px;
+      margin: 36px 0;
+    }
+
+    .pull p {
+      font-size: 20px !important;
+      color: var(--text) !important;
+      font-weight: 500;
+      line-height: 1.6 !important;
+      letter-spacing: -0.01em;
+    }
+
+    /* Data table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 32px 0;
+      font-size: 14px;
+    }
+
+    .data-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 12px 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .data-table td {
+      color: var(--muted);
+      padding: 12px 12px 12px 0;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .data-table td:first-child {
+      color: var(--text);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* References */
+    .references {
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .references h2 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .references ol {
+      padding-left: 20px;
+    }
+
+    .references li {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 48px 0 64px;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    footer a:hover { color: var(--text); }
+
+    .footer-sep { opacity: 0.3; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <nav>
+      <a href="/">← Open Primitive</a>
+    </nav>
+
+    <header>
+      <div class="kicker">Why this exists</div>
+      <h1>The Case Against<br>the Translation Layer</h1>
+      <p class="subtitle">On search, AI, and what gets lost when someone else summarizes the record for you.</p>
+    </header>
+
+    <div class="body-text">
+
+      <h2>The problem</h2>
+
+      <p>The most consequential information about your daily life is public. The government records it, indexes it, and publishes it. The DOT files every flight delay with tail number, cause code, and minute-level precision. NHTSA maintains crash test data for every vehicle sold in the United States, plus a database of every active recall and every fatality investigation. The National Library of Medicine indexes every peer-reviewed study published in the English language. CMS publishes patient outcome scores for every hospital in the country.</p>
+
+      <p>Almost no one reads it. Not because it's hidden. Because it's not readable.</p>
+
+      <p>A flight delay report is a 47-column CSV. A crash test filing is a structured XML document. A clinical trial abstract assumes you understand what a hazard ratio is. The record exists. The interface to the record has never been built for a person making a decision.</p>
+
+      <p>Two industries promised to fix this. Neither did.</p>
+
+      <h2>What search did</h2>
+
+      <p>In 1998, Brin and Page published "The Anatomy of a Large-Scale Hypertextual Web Search Engine," introducing PageRank — the insight that a link from one document to another was an implicit citation, and that a document cited by many authoritative sources was likely authoritative itself.<sup>1</sup> The algorithm was elegant. The mission was genuine: organize the world's information and make it universally accessible.</p>
+
+      <p>Then they discovered advertising.</p>
+
+      <p>The search index that exists today is not optimized for accuracy. It is optimized for engagement, which correlates with accuracy only loosely and degrades over time as publishers learn to optimize for the index instead of the reader. A search for "is vitamin D effective" returns manufacturer pages, supplement retailers, health media that depends on supplement advertising, and a small number of actual studies buried behind pagination. The signal and the noise are presented with identical authority.</p>
+
+      <div class="pull">
+        <p>Search doesn't show you what is true. It shows you what has been linked to. Those are not the same thing.</p>
+      </div>
+
+      <p>The deeper problem is structural. Search returns documents. The federal record is not a document — it is a database, a filing system, an XML feed. It does not have inbound links. It does not rank. The DOT's on-time performance data is not findable through search in any useful sense. You can find articles about it. You cannot find it.</p>
+
+      <h2>What AI did</h2>
+
+      <p>Large language models trained on human feedback — RLHF, as described by Ouyang et al. in 2022<sup>2</sup> — are optimized to generate responses that humans rate as helpful, harmless, and honest. In practice, this means responses that sound authoritative, are structured clearly, and do not hedge excessively. Humans rate confident answers higher than uncertain ones, even when the uncertainty is warranted.</p>
+
+      <p>The result is a system that presents conclusions without showing its work. Ask an AI whether creatine supplementation improves athletic performance. It will tell you yes, with some qualifications. It will not show you the 53,000 studies in PubMed, the meta-analyses that found effect sizes ranging from negligible to significant depending on the population, the three large RCTs that contradict the headline finding, or the funding sources of the most-cited papers.</p>
+
+      <p>It cannot show you these things. It has no access to the primary record. It was trained on text that described the primary record, filtered through the same engagement-optimized search index described above, then further filtered by the preferences of human raters who had no more access to the original data than you do.</p>
+
+      <div class="pull">
+        <p>An AI translation isn't neutral. Something in the original doesn't survive the trip.</p>
+      </div>
+
+      <p>This is not a criticism of the technology. It is a description of what the technology is. RLHF-trained language models are extraordinarily good at synthesizing text into fluent, structured summaries. That capability is genuinely useful for many tasks. It is the wrong tool when the requirement is fidelity to primary sources, because synthesis by definition involves loss.</p>
+
+      <h2>The translational gap</h2>
+
+      <p>Consider the specific case of a family deciding whether to purchase a vehicle. The available data is substantial. NHTSA's 5-Star Safety Ratings program generates frontal crash, side crash, and rollover scores for every rated vehicle, expressed as a star rating derived from physical tests with instrumented dummies.<sup>3</sup> The agency also maintains a database of every Technical Service Bulletin and Recall Campaign, searchable by make, model, and year. Complaints from owners — more than 10,000 filed monthly — are publicly accessible and full-text searchable.</p>
+
+      <p>The typical consumer interaction with this data is to ask a salesperson, read a magazine review, or — increasingly — ask an AI assistant. None of these channels surfaces the primary record. The salesperson has an incentive. The review is written by a journalist who did not read the crash test methodology. The AI summarizes text that described summaries of the original data.</p>
+
+      <p>At each step in that chain, something is lost. The specific star ratings. The raw injury probability scores underlying the stars. The open recall status. The pattern of complaints that appears in the database before a recall is issued.</p>
+
+      <p>The data that would change the decision is available. The interface that would surface it has never been built.</p>
+
+      <h2>The sources</h2>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Source</th>
+            <th>What it contains</th>
+            <th>Update frequency</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>BTS Form 41 / ATADS</td>
+            <td>Flight-level on-time, cancellation, and cause data for all US carriers. Reported monthly. Publicly available via the DOT Bureau of Transportation Statistics.</td>
+            <td>Monthly</td>
+          </tr>
+          <tr>
+            <td>FAA NASSTATUS</td>
+            <td>Real-time National Airspace System status: ground stops, ground delay programs, and arrival/departure delays at every airport in the US, updated continuously.</td>
+            <td>Live</td>
+          </tr>
+          <tr>
+            <td>NHTSA 5-Star Ratings</td>
+            <td>Frontal, side, and rollover crash test scores for every tested vehicle. Expressed as stars derived from probability of serious injury in a standardized test.</td>
+            <td>Per model year</td>
+          </tr>
+          <tr>
+            <td>NHTSA Complaints &amp; Recalls</td>
+            <td>Every owner-submitted complaint and every active recall campaign, searchable by vehicle. Approximately 10,000 complaints filed per month.</td>
+            <td>Continuous</td>
+          </tr>
+          <tr>
+            <td>PubMed / MEDLINE</td>
+            <td>35+ million citations to peer-reviewed biomedical literature, indexed by the National Library of Medicine. Searchable by MeSH term, title, abstract, author, and publication type.</td>
+            <td>Daily</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>What Open Primitive does</h2>
+
+      <p>Open Primitive is not an AI. It does not summarize. It does not interpret. It connects to primary-source federal databases and renders their output in a form a person can read and act on.</p>
+
+      <p>The design constraint is strict: every number shown must be traceable to a specific filing, a specific database record, a specific row in a government dataset. If the underlying data is ambiguous, the interface shows the ambiguity. If the data is missing, it says so.</p>
+
+      <p>The current tools surface three categories of federal data where the gap between the published record and public awareness is widest and the stakes of the decisions involved are highest: transportation safety, vehicle safety, and health evidence.</p>
+
+      <p>More will follow. Hospital quality scores from CMS HCAHPS. Water quality data from EPA ECHO. Drug interaction data from the FDA Adverse Event Reporting System. The pattern is the same in each case: the record exists, the interface doesn't, and the decisions people make without it are worse than they need to be.</p>
+
+      <h2>What it doesn't do</h2>
+
+      <p>Open Primitive does not tell you what to decide. It shows you what the record says. The difference matters.</p>
+
+      <p>A tool that tells you "Alaska Airlines is the safest choice" has made a judgment about how to weight on-time performance against cancellation rates against your specific route and departure time. That judgment belongs to you. A tool that shows you the DOT data, the FAA live status, and the BTS track record for each carrier gives you what you need to make it.</p>
+
+      <p>The goal is not to replace judgment. It is to restore the precondition for it: access to the actual record, in a form you can read.</p>
+
+      <h2>Open questions</h2>
+
+      <p>Several design problems remain unsolved. Federal databases are not designed for real-time consumer queries — rate limits, schema changes, and data gaps are operational realities, not edge cases. The line between "making data readable" and "making data interpretive" is not always clear; a composite score that ranks airlines involves weighting choices that embed assumptions. As more tools are added, the question of what counts as "primary source" becomes harder to answer cleanly.</p>
+
+      <p>These problems are worth naming because they are not decorative. They are the reasons no one has built this before. The commercial incentive runs in the opposite direction: AI answers are cheaper to produce, easier to scale, and more satisfying to users in the short term than raw data interfaces. The correct answer to "is this car safe" is not a star rating. It is a 90-minute reading session. Most people will not do that. Open Primitive tries to make it possible in five minutes.</p>
+
+      <p><strong>Whether that is enough is an open question.</strong> The goal is to make the primary record accessible enough that more people use it, more often, for the decisions where it matters most.</p>
+
+    </div>
+
+    <div class="references">
+      <h2>References</h2>
+      <ol>
+        <li>Brin, S. &amp; Page, L. (1998). The anatomy of a large-scale hypertextual web search engine. <em>Computer Networks and ISDN Systems</em>, 30(1–7), 107–117.</li>
+        <li>Ouyang, L. et al. (2022). Training language models to follow instructions with human feedback. <em>arXiv</em> 2203.02155.</li>
+        <li>NHTSA (2024). New Car Assessment Program (NCAP) 5-Star Safety Ratings Methodology. US Department of Transportation.</li>
+        <li>Bureau of Transportation Statistics (2024). Airline On-Time Statistics and Delay Causes. Form 41 / ATADS. US Department of Transportation.</li>
+        <li>National Library of Medicine (2024). PubMed Overview. US National Institutes of Health.</li>
+      </ol>
+    </div>
+
+    <footer>
+      <a href="/">← Open Primitive</a>
+      <span class="footer-sep">·</span>
+      Built by David Hamilton
+    </footer>
+
+  </div>
+</body>
+</html>
