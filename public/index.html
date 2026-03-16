@@ -131,6 +131,64 @@
       .stream-name { font-size: 19px; }
     }
 
+    /* Three aims */
+    .three-aims {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border: 1px solid var(--border);
+      margin-top: var(--space-16);
+      margin-bottom: var(--space-16);
+    }
+
+    .aim {
+      padding: var(--space-8) var(--space-7);
+      border-right: 1px solid var(--border);
+    }
+
+    .aim:last-child { border-right: none; }
+
+    .aim-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--space-3);
+    }
+
+    .aim-headline {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      margin-bottom: var(--space-3);
+    }
+
+    .aim-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: var(--space-5);
+    }
+
+    .aim-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .aim-link:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      .three-aims { grid-template-columns: 1fr; }
+      .aim { border-right: none; border-bottom: 1px solid var(--border); }
+      .aim:last-child { border-bottom: none; }
+    }
+
     /* Intel map */
     .intel-map-wrap {
       margin-top: var(--space-4);
@@ -219,6 +277,27 @@
         Why this exists →
       </a>
     </section>
+
+    <div class="three-aims">
+      <div class="aim">
+        <div class="aim-label">For humans</div>
+        <div class="aim-headline">The record, readable.</div>
+        <div class="aim-desc">Seven direct interfaces to federal primary-source data. What the government actually filed — not a news story about it, not an AI summary of it.</div>
+        <a class="aim-link" href="#primitives">See the tools →</a>
+      </div>
+      <div class="aim">
+        <div class="aim-label">For agents</div>
+        <div class="aim-headline">Primary source as API.</div>
+        <div class="aim-desc">Every primitive is a structured endpoint. Feed your LLM or workflow clean government data — no scraping, no hallucination, no middleman.</div>
+        <a class="aim-link" href="/for-agents.html">API reference →</a>
+      </div>
+      <div class="aim">
+        <div class="aim-label">For learning</div>
+        <div class="aim-headline">Know what to translate.</div>
+        <div class="aim-desc">Not all public data benefits from AI. We track which sources gain clarity through translation — and which ones you should still read raw.</div>
+        <a class="aim-link" href="/manifesto.html">Read the thinking →</a>
+      </div>
+    </div>
 
     <div class="op-label" style="margin-top: var(--space-16);">Why these seven</div>
     <div class="intel-map-wrap">
@@ -324,7 +403,7 @@
 
     </div>
 
-    <div class="op-label">The primitives</div>
+    <div class="op-label" id="primitives">The primitives</div>
 
     <div class="streams">
 
