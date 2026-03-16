@@ -6,22 +6,22 @@
   <title>Open Primitive — The public record, unmediated.</title>
   <meta name="description" content="Seven interfaces to US federal primary-source data. No AI. No summaries. The record, readable." />
   <meta property="og:title" content="Open Primitive" />
-  <meta property="og:description" content="The government recorded it. You have never seen it." />
+  <meta property="og:description" content="Public data, made readable." />
   <meta property="og:type" content="website" />
   <link rel="stylesheet" href="/primitive.css" />
   <style>
-    /* Homepage-specific */
+    /* Homepage-specific styles */
 
     .streams {
-      margin-bottom: 64px;
+      margin-bottom: var(--space-16);
     }
 
     .stream {
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: start;
-      gap: 0 24px;
-      padding: 22px 0;
+      gap: 0 var(--space-6);
+      padding: var(--space-6) 0;
       border-bottom: 1px solid var(--border);
       text-decoration: none;
       color: inherit;
@@ -35,119 +35,133 @@
     .stream::before {
       content: '';
       position: absolute;
-      left: -40px; right: -40px;
+      left: -48px; right: -48px;
       top: 0; bottom: 0;
-      background: rgba(77,159,255,0.03);
+      background: var(--bg-hover);
       opacity: 0;
       transition: opacity 0.15s;
       pointer-events: none;
     }
 
     .stream:hover::before { opacity: 1; }
-
-    .stream:hover .stream-name { color: var(--signal-bright); }
-    .stream:hover .stream-arrow { color: var(--signal); transform: translateX(4px); }
+    .stream:hover .stream-name { color: var(--accent); }
+    .stream:hover .stream-arrow { color: var(--accent); transform: translateX(4px); }
 
     .stream-left { grid-column: 1; }
-    .stream-right { grid-column: 2; text-align: right; }
+    .stream-right { grid-column: 2; text-align: right; padding-top: 2px; }
 
     .stream-id-row {
       display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 4px;
+      align-items: baseline;
+      gap: var(--space-3);
+      margin-bottom: var(--space-2);
     }
 
     .stream-id {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 10px;
-      color: var(--signal);
-      letter-spacing: 0.12em;
-      opacity: 0.6;
+      color: var(--dim);
+      letter-spacing: 0.14em;
     }
 
     .stream-name {
-      font-family: var(--mono);
-      font-size: 13px;
-      font-weight: bold;
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
       color: var(--text);
-      letter-spacing: 0.1em;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
       transition: color 0.15s;
     }
 
     .stream-desc {
-      font-size: 14px;
+      font-size: 15px;
       color: var(--muted);
-      line-height: 1.5;
-      max-width: 520px;
-      margin-bottom: 12px;
+      line-height: 1.55;
+      max-width: 500px;
+      margin-bottom: var(--space-3);
     }
 
     .stream-source {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 10px;
       color: var(--dim);
       letter-spacing: 0.08em;
     }
 
     .stream-meta {
-      font-family: var(--mono);
+      font-family: var(--font-mono);
       font-size: 11px;
       color: var(--dim);
-      margin-bottom: 8px;
+      line-height: 1.5;
       letter-spacing: 0.06em;
+      text-align: right;
     }
 
     .stream-arrow {
-      font-size: 16px;
-      color: var(--dim);
+      font-size: 18px;
+      color: var(--border-strong);
       transition: color 0.15s, transform 0.15s;
-      margin-top: 6px;
+      margin-top: var(--space-2);
+      display: block;
+      text-align: right;
     }
 
     /* Argument section */
     .argument {
       margin-bottom: 0;
+      padding-top: var(--space-2);
     }
 
     .argument p {
       font-size: 17px;
       color: var(--muted);
-      line-height: 1.85;
-      max-width: 620px;
-      margin-bottom: 18px;
+      line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: var(--space-5);
     }
 
-    .argument p strong { color: var(--text); font-weight: 500; }
+    .argument p strong {
+      color: var(--body);
+      font-weight: 600;
+    }
 
     .argument-link {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      color: var(--signal);
+      gap: var(--space-2);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--accent);
       text-decoration: none;
-      text-transform: uppercase;
-      margin-top: 6px;
+      margin-top: var(--space-2);
       transition: gap 0.2s, color 0.15s;
     }
-    .argument-link:hover { gap: 14px; color: var(--signal-bright); }
+    .argument-link:hover { gap: var(--space-3); color: #8a3d21; }
 
-    /* Hero second line slightly lighter */
-    .hero-line2 { color: var(--muted) !important; }
+    /* Hero sizing */
+    .hero-num {
+      font-family: var(--font-display);
+      font-size: clamp(80px, 14vw, 140px);
+      font-weight: 800;
+      color: var(--border);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      margin-bottom: var(--space-6);
+      -webkit-font-smoothing: antialiased;
+    }
 
     @media (max-width: 640px) {
-      .stream { grid-template-columns: 1fr; gap: 4px; }
+      .stream { grid-template-columns: 1fr; gap: var(--space-1); }
       .stream-right { text-align: left; }
       .stream::before { left: -20px; right: -20px; }
+      .stream-name { font-size: 19px; }
+      .hero-num { font-size: 72px; }
     }
   </style>
 </head>
 <body>
-
-  <div class="op-scan"></div>
 
   <div class="op-page">
 
@@ -162,8 +176,8 @@
     <section class="op-hero">
       <div class="op-eyebrow">Seven federal datasets · Open access · No intermediaries</div>
       <h1 id="h1a">Public data,</h1>
-      <h1 id="h1b">made readable.</h1>
-      <p style="margin-top:28px;">
+      <h1 id="h1b" style="color: var(--muted); margin-bottom: var(--space-8);">made readable.</h1>
+      <p>
         Federal databases are public but rarely usable.
         These are <strong>direct interfaces</strong> to the primary record —
         hospital outcomes, water quality, drug reports, flight performance, and more.
@@ -187,7 +201,7 @@
         </div>
         <div class="stream-right">
           <div class="stream-meta">Live<br>rankings</div>
-          <div class="stream-arrow">→</div>
+          <span class="stream-arrow">→</span>
         </div>
       </a>
 
@@ -203,7 +217,7 @@
         </div>
         <div class="stream-right">
           <div class="stream-meta">50,000+<br>vehicles</div>
-          <div class="stream-arrow">→</div>
+          <span class="stream-arrow">→</span>
         </div>
       </a>
 
@@ -219,7 +233,7 @@
         </div>
         <div class="stream-right">
           <div class="stream-meta">35M+<br>studies</div>
-          <div class="stream-arrow">→</div>
+          <span class="stream-arrow">→</span>
         </div>
       </a>
 
@@ -235,7 +249,7 @@
         </div>
         <div class="stream-right">
           <div class="stream-meta">6,000+<br>hospitals</div>
-          <div class="stream-arrow">→</div>
+          <span class="stream-arrow">→</span>
         </div>
       </a>
 
@@ -251,7 +265,7 @@
         </div>
         <div class="stream-right">
           <div class="stream-meta">50,000+<br>systems</div>
-          <div class="stream-arrow">→</div>
+          <span class="stream-arrow">→</span>
         </div>
       </a>
 
@@ -267,7 +281,7 @@
         </div>
         <div class="stream-right">
           <div class="stream-meta">15M+<br>reports</div>
-          <div class="stream-arrow">→</div>
+          <span class="stream-arrow">→</span>
         </div>
       </a>
 
@@ -283,13 +297,13 @@
         </div>
         <div class="stream-right">
           <div class="stream-meta">Class I<br>tracked</div>
-          <div class="stream-arrow">→</div>
+          <span class="stream-arrow">→</span>
         </div>
       </a>
 
     </div>
 
-    <div class="op-label" style="margin-top:0;">The argument</div>
+    <div class="op-label" style="margin-top: 0;">The argument</div>
 
     <div class="argument">
       <p>
@@ -316,11 +330,11 @@
 
   <script>
     // Scramble effect
-    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_/.<>!?';
+    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
     function scramble(el, duration, delay) {
       const original = el.textContent;
-      const go = () => {
+      setTimeout(() => {
         const start = Date.now();
         const run = () => {
           const p = Math.min((Date.now() - start) / duration, 1);
@@ -328,7 +342,7 @@
           let out = '';
           for (let i = 0; i < original.length; i++) {
             const c = original[i];
-            if (i < resolved || c === ' ' || c === '.' || c === ',') out += c;
+            if (i < resolved || c === ' ' || c === ',' || c === '.') out += c;
             else out += CHARS[Math.floor(Math.random() * CHARS.length)];
           }
           el.textContent = out;
@@ -336,8 +350,7 @@
           else el.textContent = original;
         };
         requestAnimationFrame(run);
-      };
-      setTimeout(go, delay);
+      }, delay);
     }
 
     // Fill bars
@@ -351,8 +364,8 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      scramble(document.getElementById('h1a'), 1000, 600);
-      scramble(document.getElementById('h1b'), 900, 1100);
+      scramble(document.getElementById('h1a'), 900, 400);
+      scramble(document.getElementById('h1b'), 800, 800);
       fillBars();
     });
   </script>
