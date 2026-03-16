@@ -9,6 +9,7 @@
   <meta property="og:description" content="Public data, made readable." />
   <meta property="og:type" content="website" />
   <link rel="stylesheet" href="/primitive.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   <style>
     /* Homepage-specific styles */
 
@@ -129,77 +130,62 @@
       .stream-name { font-size: 19px; }
     }
 
-    /* Knowledge map */
-    .knowledge-map {
-      display: grid;
-      grid-template-columns: 1fr 1px 1fr 1px 1fr;
-      border: 1px solid var(--border);
+    /* Intel map */
+    .intel-map-wrap {
       margin-top: var(--space-4);
       margin-bottom: var(--space-16);
     }
 
-    .territory {
-      padding: var(--space-7);
+    .intel-svg {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
-    .territory-div {
-      background: var(--border);
-    }
-
-    .territory-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--dim);
-      margin-bottom: var(--space-2);
-    }
-
-    .territory-question {
-      font-family: var(--font-display);
-      font-size: 17px;
-      font-weight: 600;
-      color: var(--text);
-      line-height: 1.3;
-      letter-spacing: -0.01em;
-      margin-bottom: var(--space-5);
-      padding-bottom: var(--space-5);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .territory-nodes {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-4);
-    }
-
-    .territory-node {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .node-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--body);
-    }
-
-    .node-desc {
-      font-size: 11px;
-      color: var(--dim);
-      font-family: var(--font-mono);
-      letter-spacing: 0.04em;
-      line-height: 1.4;
+    .intel-map-mobile {
+      display: none;
     }
 
     @media (max-width: 640px) {
-      .knowledge-map {
-        grid-template-columns: 1fr;
+      .intel-svg { display: none; }
+      .intel-map-mobile {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--border);
       }
-      .territory-div {
-        height: 1px;
+      .imm-row {
+        padding: var(--space-6) var(--space-5);
+        border-bottom: 1px solid var(--border);
+      }
+      .imm-row:last-child { border-bottom: none; }
+      .imm-territory {
+        font-family: var(--font-display);
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -0.01em;
+        margin-bottom: var(--space-1);
+      }
+      .imm-q {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: var(--space-3);
+      }
+      .imm-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+      }
+      .imm-tags span {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent);
+        border: 1px solid var(--border);
+        padding: 2px 8px;
+        background: var(--bg-card);
       }
     }
   </style>
@@ -238,60 +224,106 @@
     </section>
 
     <div class="op-label" style="margin-top: var(--space-16);">Why these seven</div>
-    <div class="knowledge-map">
+    <div class="intel-map-wrap">
 
-      <div class="territory">
-        <div class="territory-label">Move</div>
-        <div class="territory-question">Is this journey safe?</div>
-        <div class="territory-nodes">
-          <div class="territory-node">
-            <span class="node-name">Flying</span>
-            <span class="node-desc">Carrier on-time performance, DOT</span>
-          </div>
-          <div class="territory-node">
-            <span class="node-name">Cars</span>
-            <span class="node-desc">Crash ratings, recalls, complaints, NHTSA</span>
-          </div>
+      <!-- Mobile fallback -->
+      <div class="intel-map-mobile">
+        <div class="imm-row">
+          <div class="imm-territory">Move</div>
+          <div class="imm-q">Is this journey safe?</div>
+          <div class="imm-tags"><span>Flying</span><span>Cars</span></div>
+        </div>
+        <div class="imm-row">
+          <div class="imm-territory">Sustain</div>
+          <div class="imm-q">Is this safe to consume?</div>
+          <div class="imm-tags"><span>Food</span><span>Water</span></div>
+        </div>
+        <div class="imm-row">
+          <div class="imm-territory">Heal</div>
+          <div class="imm-q">Can I trust what heals me?</div>
+          <div class="imm-tags"><span>Health</span><span>Hospitals</span><span>Drugs</span></div>
         </div>
       </div>
 
-      <div class="territory-div"></div>
+      <!-- Desktop SVG diagram -->
+      <svg id="intel-svg" class="intel-svg" viewBox="0 0 660 375" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <defs>
+          <style>
+            .svgt-name { font-family: 'Fraunces', Georgia, serif; font-size: 22px; font-weight: 700; fill: #1c1712; }
+            .svgt-q    { font-family: 'DM Sans', sans-serif; font-size: 11px; fill: #6b5c4e; letter-spacing: 0.02em; }
+            .svgp-name { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; fill: #1c1712; }
+            .svgp-src  { font-family: 'DM Sans', sans-serif; font-size: 10px; fill: #9a8878; letter-spacing: 0.05em; }
+            .svgedge   { stroke: #c5b9ac; stroke-width: 1; fill: none; }
+            .svgt-dot  { fill: #9e4929; }
+            .svgp-dot  { fill: #3d2f26; }
+          </style>
+        </defs>
 
-      <div class="territory">
-        <div class="territory-label">Sustain</div>
-        <div class="territory-question">Is this safe to consume?</div>
-        <div class="territory-nodes">
-          <div class="territory-node">
-            <span class="node-name">Food</span>
-            <span class="node-desc">Active FDA recalls by severity</span>
-          </div>
-          <div class="territory-node">
-            <span class="node-name">Water</span>
-            <span class="node-desc">Contaminant violations by ZIP, EPA</span>
-          </div>
-        </div>
-      </div>
+        <!-- Lines drawn by animation -->
+        <g id="lines-group">
+          <path class="svgedge" d="M 179 75 L 490 50" />
+          <path class="svgedge" d="M 179 75 L 490 100" />
+          <path class="svgedge" d="M 201 183 L 490 162" />
+          <path class="svgedge" d="M 201 183 L 490 210" />
+          <path class="svgedge" d="M 179 292 L 490 268" />
+          <path class="svgedge" d="M 179 292 L 490 305" />
+          <path class="svgedge" d="M 179 292 L 490 345" />
+        </g>
 
-      <div class="territory-div"></div>
+        <!-- Territory anchors -->
+        <g class="t-group" id="tg-move">
+          <text class="svgt-name" x="18" y="70">Move</text>
+          <text class="svgt-q"    x="18" y="88">Is this journey safe?</text>
+          <circle class="svgt-dot" cx="175" cy="75" r="4" />
+        </g>
+        <g class="t-group" id="tg-sustain">
+          <text class="svgt-name" x="18" y="178">Sustain</text>
+          <text class="svgt-q"    x="18" y="196">Is this safe to consume?</text>
+          <circle class="svgt-dot" cx="197" cy="183" r="4" />
+        </g>
+        <g class="t-group" id="tg-heal">
+          <text class="svgt-name" x="18" y="288">Heal</text>
+          <text class="svgt-q"    x="18" y="306">Can I trust what heals me?</text>
+          <circle class="svgt-dot" cx="175" cy="292" r="4" />
+        </g>
 
-      <div class="territory">
-        <div class="territory-label">Heal</div>
-        <div class="territory-question">Can I trust what heals me?</div>
-        <div class="territory-nodes">
-          <div class="territory-node">
-            <span class="node-name">Health</span>
-            <span class="node-desc">Study volume for any claim, PubMed</span>
-          </div>
-          <div class="territory-node">
-            <span class="node-name">Hospitals</span>
-            <span class="node-desc">Mortality &amp; outcomes, CMS</span>
-          </div>
-          <div class="territory-node">
-            <span class="node-name">Drugs</span>
-            <span class="node-desc">Adverse events filed with FDA</span>
-          </div>
-        </div>
-      </div>
+        <!-- Primitive nodes -->
+        <g class="p-group" id="pg-flying">
+          <circle class="svgp-dot" cx="490" cy="50" r="3" />
+          <text class="svgp-name" x="502" y="54">Flying</text>
+          <text class="svgp-src"  x="502" y="67">DOT · on-time performance</text>
+        </g>
+        <g class="p-group" id="pg-cars">
+          <circle class="svgp-dot" cx="490" cy="100" r="3" />
+          <text class="svgp-name" x="502" y="104">Cars</text>
+          <text class="svgp-src"  x="502" y="117">NHTSA · crash ratings</text>
+        </g>
+        <g class="p-group" id="pg-food">
+          <circle class="svgp-dot" cx="490" cy="162" r="3" />
+          <text class="svgp-name" x="502" y="166">Food</text>
+          <text class="svgp-src"  x="502" y="179">FDA · active recalls</text>
+        </g>
+        <g class="p-group" id="pg-water">
+          <circle class="svgp-dot" cx="490" cy="210" r="3" />
+          <text class="svgp-name" x="502" y="214">Water</text>
+          <text class="svgp-src"  x="502" y="227">EPA · violations</text>
+        </g>
+        <g class="p-group" id="pg-health">
+          <circle class="svgp-dot" cx="490" cy="268" r="3" />
+          <text class="svgp-name" x="502" y="272">Health</text>
+          <text class="svgp-src"  x="502" y="285">PubMed · 35M+ studies</text>
+        </g>
+        <g class="p-group" id="pg-hospitals">
+          <circle class="svgp-dot" cx="490" cy="305" r="3" />
+          <text class="svgp-name" x="502" y="309">Hospitals</text>
+          <text class="svgp-src"  x="502" y="322">CMS · outcomes data</text>
+        </g>
+        <g class="p-group" id="pg-drugs">
+          <circle class="svgp-dot" cx="490" cy="345" r="3" />
+          <text class="svgp-name" x="502" y="349">Drugs</text>
+          <text class="svgp-src"  x="502" y="362">FDA FAERS · adverse events</text>
+        </g>
+      </svg>
 
     </div>
 
@@ -459,7 +491,65 @@
       scramble(document.getElementById('h1a'), 900, 400);
       scramble(document.getElementById('h1b'), 800, 800);
       fillBars();
+      initIntelMap();
     });
+
+    // Intel map: animated line draw + node reveal
+    function initIntelMap() {
+      const svgEl = document.getElementById('intel-svg');
+      if (!svgEl || typeof anime === 'undefined') return;
+
+      // Init lines: set dasharray to path length, dashoffset = length (invisible)
+      svgEl.querySelectorAll('#lines-group path').forEach(path => {
+        const len = path.getTotalLength();
+        path.style.strokeDasharray = len;
+        path.style.strokeDashoffset = len;
+      });
+
+      // Init groups: invisible
+      svgEl.querySelectorAll('.t-group, .p-group').forEach(g => {
+        g.style.opacity = 0;
+      });
+
+      let played = false;
+      function play() {
+        if (played) return;
+        played = true;
+        anime.timeline()
+          // 1. Territory anchors slide in
+          .add({
+            targets: svgEl.querySelectorAll('.t-group'),
+            opacity: [0, 1],
+            translateX: [-14, 0],
+            duration: 520,
+            delay: anime.stagger(190),
+            easing: 'easeOutCubic',
+          })
+          // 2. Lines draw left-to-right
+          .add({
+            targets: svgEl.querySelectorAll('#lines-group path'),
+            strokeDashoffset: [anime.setDashoffset, 0],
+            duration: 560,
+            delay: anime.stagger(75),
+            easing: 'easeInOutSine',
+          }, '-=320')
+          // 3. Primitive nodes appear
+          .add({
+            targets: svgEl.querySelectorAll('.p-group'),
+            opacity: [0, 1],
+            translateX: [10, 0],
+            duration: 380,
+            delay: anime.stagger(55),
+            easing: 'easeOutCubic',
+          }, '-=380');
+      }
+
+      // Trigger on scroll into view
+      const observer = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) { play(); observer.disconnect(); }
+      }, { threshold: 0.25 });
+      observer.observe(svgEl);
+    }
   </script>
 
 </body>
