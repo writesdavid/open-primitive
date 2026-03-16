@@ -5,94 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Why This Exists — Open Primitive</title>
   <meta name="description" content="A case for decision-oriented interfaces to US federal primary-source data. On search, AI, and what gets lost in translation." />
+  <link rel="stylesheet" href="/primitive.css" />
   <style>
-    :root {
-      --bg: #09090b;
-      --surface: #111113;
-      --border: #232328;
-      --text: #f1f1f3;
-      --muted: #6b6b80;
-      --white: #ffffff;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 16px;
-      line-height: 1.7;
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .page {
-      max-width: 680px;
+    .manifesto-page {
+      max-width: 720px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 var(--space-12) 96px;
     }
 
-    nav {
-      padding: 40px 0 0;
-    }
-
-    nav a {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-
-    nav a:hover { color: var(--text); }
-
-    header {
-      padding: 64px 0 48px;
+    .manifesto-nav {
+      padding: var(--space-8) 0;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 56px;
+      margin-bottom: var(--space-16);
     }
 
-    .kicker {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
+    .manifesto-header {
+      padding: var(--space-16) 0 var(--space-12);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--space-16);
     }
 
-    h1 {
-      font-size: clamp(32px, 5vw, 48px);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      color: var(--white);
-      margin-bottom: 20px;
+    .manifesto-header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+      color: var(--text);
+      margin-bottom: var(--space-5);
     }
 
-    .subtitle {
-      font-size: 18px;
+    .manifesto-subtitle {
+      font-size: 19px;
       color: var(--muted);
       line-height: 1.6;
-      max-width: 560px;
+      max-width: 540px;
     }
 
-    /* ── Body ── */
-
+    /* Section headers */
     .body-text h2 {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin: 56px 0 20px;
+      color: var(--dim);
+      margin: var(--space-16) 0 var(--space-6);
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .body-text h2::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
     }
 
     .body-text h2:first-child {
@@ -100,20 +68,20 @@
     }
 
     .body-text p {
-      font-size: 17px;
+      font-size: 18px;
       color: var(--muted);
       line-height: 1.85;
-      margin-bottom: 22px;
+      margin-bottom: var(--space-5);
     }
 
     .body-text p strong {
-      color: var(--text);
+      color: var(--body);
       font-weight: 600;
     }
 
     .body-text p em {
-      color: var(--text);
-      font-style: normal;
+      color: var(--body);
+      font-style: italic;
     }
 
     .body-text p:last-child {
@@ -122,110 +90,146 @@
 
     /* Pull quote */
     .pull {
-      border-left: 2px solid var(--border);
-      padding: 4px 0 4px 24px;
-      margin: 36px 0;
+      border-left: 3px solid var(--accent);
+      padding: var(--space-2) 0 var(--space-2) var(--space-6);
+      margin: var(--space-8) 0;
     }
 
     .pull p {
-      font-size: 20px !important;
+      font-family: var(--font-display) !important;
+      font-size: 22px !important;
       color: var(--text) !important;
       font-weight: 500;
-      line-height: 1.6 !important;
+      line-height: 1.5 !important;
       letter-spacing: -0.01em;
+      margin-bottom: 0 !important;
     }
 
     /* Data table */
     .data-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 32px 0;
+      margin: var(--space-8) 0;
       font-size: 14px;
     }
 
     .data-table th {
       text-align: left;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--muted);
-      padding: 8px 12px 8px 0;
-      border-bottom: 1px solid var(--border);
+      color: var(--dim);
+      padding: var(--space-2) var(--space-4) var(--space-2) 0;
+      border-bottom: 1.5px solid var(--border);
     }
 
     .data-table td {
       color: var(--muted);
-      padding: 12px 12px 12px 0;
+      padding: var(--space-4) var(--space-4) var(--space-4) 0;
       border-bottom: 1px solid var(--border);
       vertical-align: top;
+      font-size: 14px;
+      line-height: 1.55;
     }
 
     .data-table td:first-child {
-      color: var(--text);
+      color: var(--body);
+      font-family: var(--font-mono);
+      font-size: 12px;
       font-weight: 500;
       white-space: nowrap;
+      padding-right: var(--space-6);
+    }
+
+    .data-table td:last-child {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    /* Superscripts */
+    sup {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--accent);
     }
 
     /* References */
     .references {
-      margin-top: 64px;
-      padding-top: 32px;
+      margin-top: var(--space-16);
+      padding-top: var(--space-8);
       border-top: 1px solid var(--border);
     }
 
-    .references h2 {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
     .references ol {
-      padding-left: 20px;
+      padding-left: var(--space-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
     }
 
     .references li {
       font-size: 13px;
-      color: var(--muted);
+      font-family: var(--font-mono);
+      color: var(--dim);
       line-height: 1.6;
-      margin-bottom: 10px;
+    }
+
+    .references li em {
+      font-style: italic;
+      color: var(--muted);
     }
 
     /* Footer */
-    footer {
-      padding: 48px 0 64px;
-      font-size: 13px;
-      color: var(--muted);
+    .manifesto-footer {
+      padding: var(--space-8) 0 0;
+      border-top: 1px solid var(--border);
+      margin-top: var(--space-16);
       display: flex;
-      gap: 16px;
+      justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-3);
     }
 
-    footer a {
-      color: var(--muted);
+    .manifesto-footer-text {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .manifesto-footer a {
+      color: var(--dim);
       text-decoration: none;
-      transition: color 0.15s ease;
     }
 
-    footer a:hover { color: var(--text); }
+    .manifesto-footer a:hover { color: var(--accent); }
 
-    .footer-sep { opacity: 0.3; }
+    @media (max-width: 640px) {
+      .manifesto-page { padding: 0 var(--space-6) 72px; }
+      .body-text p { font-size: 17px; }
+      .pull p { font-size: 19px !important; }
+      .data-table { font-size: 13px; }
+      .data-table td:first-child { white-space: normal; }
+      .data-table td:last-child { white-space: normal; }
+    }
   </style>
 </head>
 <body>
-  <div class="page">
+  <div class="manifesto-page">
 
-    <nav>
-      <a href="/">← Open Primitive</a>
+    <nav class="manifesto-nav">
+      <a class="op-wordmark" href="/">Open Primitive</a>
     </nav>
 
-    <header>
-      <div class="kicker">Why this exists</div>
+    <header class="manifesto-header">
+      <div class="op-eyebrow">Why this exists</div>
       <h1>The Case Against<br>the Translation Layer</h1>
-      <p class="subtitle">On search, AI, and what gets lost when someone else summarizes the record for you.</p>
+      <p class="manifesto-subtitle">On search, AI, and what gets lost when someone else summarizes the record for you.</p>
     </header>
 
     <div class="body-text">
@@ -346,7 +350,7 @@
     </div>
 
     <div class="references">
-      <h2>References</h2>
+      <div class="op-label">References</div>
       <ol>
         <li>Brin, S. &amp; Page, L. (1998). The anatomy of a large-scale hypertextual web search engine. <em>Computer Networks and ISDN Systems</em>, 30(1–7), 107–117.</li>
         <li>Ouyang, L. et al. (2022). Training language models to follow instructions with human feedback. <em>arXiv</em> 2203.02155.</li>
@@ -356,10 +360,9 @@
       </ol>
     </div>
 
-    <footer>
-      <a href="/">← Open Primitive</a>
-      <span class="footer-sep">·</span>
-      Built by David Hamilton
+    <footer class="manifesto-footer">
+      <span class="manifesto-footer-text"><a href="/">← Open Primitive</a></span>
+      <span class="manifesto-footer-text">David Hamilton</span>
     </footer>
 
   </div>
