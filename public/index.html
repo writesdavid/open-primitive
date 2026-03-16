@@ -3,622 +3,358 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Open Primitive — The public record, made readable.</title>
-  <meta name="description" content="On search, AI, and what gets lost when someone else summarizes the record for you. Seven interfaces to US federal primary-source data." />
+  <title>Open Primitive — The public record, unmediated.</title>
+  <meta name="description" content="Seven interfaces to US federal primary-source data. No AI. No summaries. The record, readable." />
   <meta property="og:title" content="Open Primitive" />
-  <meta property="og:description" content="Some things you should read yourself." />
+  <meta property="og:description" content="The government recorded it. You have never seen it." />
   <meta property="og:type" content="website" />
+  <link rel="stylesheet" href="/primitive.css" />
   <style>
-    :root {
-      --bg: #09090b;
-      --surface: #111113;
-      --border: #1e1e24;
-      --text: #f1f1f3;
-      --muted: #6b6b80;
-      --dim: #3a3a48;
-      --white: #ffffff;
-      --sidebar-w: 220px;
-    }
+    /* Homepage-specific */
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 16px;
-      line-height: 1.7;
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── Layout ── */
-
-    .layout {
-      display: flex;
-      align-items: flex-start;
-      min-height: 100vh;
-    }
-
-    /* ── Sidebar ── */
-
-    .sidebar {
-      width: var(--sidebar-w);
-      flex-shrink: 0;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      border-right: 1px solid var(--border);
-      padding: 36px 0 48px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .sidebar::-webkit-scrollbar { width: 0; }
-
-    .wordmark {
-      padding: 0 24px 32px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--white);
-      text-decoration: none;
-      display: block;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 28px;
-      line-height: 1.3;
-    }
-
-    .sidebar-section {
-      padding: 0 24px;
-      margin-bottom: 28px;
-    }
-
-    .sidebar-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--dim);
-      margin-bottom: 10px;
-      display: block;
-    }
-
-    .sidebar-nav {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .sidebar-nav a {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 5px 8px;
-      border-radius: 6px;
-      transition: color 0.15s, background 0.15s;
-      line-height: 1.3;
-    }
-
-    .sidebar-nav a:hover {
-      color: var(--text);
-      background: rgba(255,255,255,0.04);
-    }
-
-    .nav-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .nav-dot--indigo  { background: #6366f1; }
-    .nav-dot--steel   { background: #5b8fa8; }
-    .nav-dot--teal    { background: #2dd4bf; }
-    .nav-dot--gold    { background: #f59e0b; }
-    .nav-dot--blue    { background: #3b82f6; }
-    .nav-dot--purple  { background: #a855f7; }
-    .nav-dot--orange  { background: #f97316; }
-
-    .sidebar-divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 4px 24px 28px;
-    }
-
-    .sidebar-toc a {
-      font-size: 12px;
-      color: var(--dim);
-      text-decoration: none;
-      padding: 3px 8px;
-      border-radius: 4px;
-      display: block;
-      transition: color 0.15s;
-    }
-
-    .sidebar-toc a:hover { color: var(--muted); }
-
-    /* ── Main content ── */
-
-    .content {
-      flex: 1;
-      min-width: 0;
-      max-width: 720px;
-      padding: 0 40px;
-    }
-
-    /* ── Header ── */
-
-    .content-header {
-      padding: 80px 0 56px;
-      border-bottom: 1px solid var(--border);
+    .streams {
       margin-bottom: 64px;
     }
 
-    .kicker {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      font-size: clamp(28px, 3.5vw, 44px);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      color: var(--white);
-      margin-bottom: 20px;
-    }
-
-    .subtitle {
-      font-size: 18px;
-      color: var(--muted);
-      line-height: 1.65;
-      max-width: 520px;
-    }
-
-    /* ── Body text ── */
-
-    .body-text h2 {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--dim);
-      margin: 64px 0 22px;
-      padding-top: 4px;
-    }
-
-    .body-text h2:first-child { margin-top: 0; }
-
-    .body-text p {
-      font-size: 17px;
-      color: var(--muted);
-      line-height: 1.9;
-      margin-bottom: 24px;
-    }
-
-    .body-text p strong { color: var(--text); font-weight: 600; }
-    .body-text p em { color: var(--text); font-style: normal; }
-    .body-text p:last-child { margin-bottom: 0; }
-
-    .body-text sup {
-      font-size: 11px;
-      color: var(--dim);
-      vertical-align: super;
-      line-height: 0;
-    }
-
-    /* Pull quote */
-    .pull {
-      border-left: 2px solid var(--border);
-      padding: 4px 0 4px 24px;
-      margin: 40px 0;
-    }
-
-    .pull p {
-      font-size: 21px !important;
-      color: var(--text) !important;
-      font-weight: 500;
-      line-height: 1.55 !important;
-      letter-spacing: -0.015em;
-      margin-bottom: 0 !important;
-    }
-
-    /* Data table */
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 36px 0;
-      font-size: 14px;
-    }
-
-    .data-table th {
-      text-align: left;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--dim);
-      padding: 8px 16px 8px 0;
+    .stream {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 0 24px;
+      padding: 22px 0;
       border-bottom: 1px solid var(--border);
-    }
-
-    .data-table td {
-      color: var(--muted);
-      padding: 14px 16px 14px 0;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-      line-height: 1.55;
-    }
-
-    .data-table td:first-child {
-      color: var(--text);
-      font-weight: 500;
-      white-space: nowrap;
-      padding-right: 24px;
-    }
-
-    .data-table td:last-child {
-      color: var(--dim);
-      white-space: nowrap;
-      font-size: 12px;
-    }
-
-    /* References */
-    .references {
-      margin-top: 72px;
-      padding-top: 36px;
-      border-top: 1px solid var(--border);
-    }
-
-    .references h2 {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--dim);
-      margin-bottom: 20px;
-    }
-
-    .references ol { padding-left: 18px; }
-
-    .references li {
-      font-size: 13px;
-      color: var(--dim);
-      line-height: 1.65;
-      margin-bottom: 10px;
-    }
-
-    /* Footer */
-    .content-footer {
-      padding: 48px 0 72px;
-      font-size: 13px;
-      color: var(--dim);
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      margin-top: 16px;
-    }
-
-    .content-footer a {
-      color: var(--dim);
       text-decoration: none;
+      color: inherit;
+      position: relative;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+
+    .stream:first-child { border-top: 1px solid var(--border); }
+
+    .stream::before {
+      content: '';
+      position: absolute;
+      left: -40px; right: -40px;
+      top: 0; bottom: 0;
+      background: rgba(77,159,255,0.03);
+      opacity: 0;
+      transition: opacity 0.15s;
+      pointer-events: none;
+    }
+
+    .stream:hover::before { opacity: 1; }
+
+    .stream:hover .stream-name { color: var(--signal-bright); }
+    .stream:hover .stream-arrow { color: var(--signal); transform: translateX(4px); }
+
+    .stream-left { grid-column: 1; }
+    .stream-right { grid-column: 2; text-align: right; }
+
+    .stream-id-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .stream-id {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--signal);
+      letter-spacing: 0.12em;
+      opacity: 0.6;
+    }
+
+    .stream-name {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--text);
+      letter-spacing: 0.1em;
       transition: color 0.15s;
     }
 
-    .content-footer a:hover { color: var(--muted); }
-    .footer-sep { opacity: 0.4; }
-
-    /* ── Mobile ── */
-
-    .mobile-nav {
-      display: none;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 20px;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .mobile-wordmark {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--white);
-      text-decoration: none;
-    }
-
-    .mobile-menu-btn {
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 6px;
+    .stream-desc {
+      font-size: 14px;
       color: var(--muted);
-      font-size: 12px;
-      padding: 5px 10px;
-      cursor: pointer;
-      letter-spacing: 0.05em;
+      line-height: 1.5;
+      max-width: 520px;
+      margin-bottom: 12px;
     }
 
-    .mobile-tools {
-      display: none;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 20px;
-      flex-wrap: wrap;
-      gap: 8px;
+    .stream-source {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--dim);
+      letter-spacing: 0.08em;
     }
 
-    .mobile-tool-link {
+    .stream-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      margin-bottom: 8px;
+      letter-spacing: 0.06em;
+    }
+
+    .stream-arrow {
+      font-size: 16px;
+      color: var(--dim);
+      transition: color 0.15s, transform 0.15s;
+      margin-top: 6px;
+    }
+
+    /* Argument section */
+    .argument {
+      margin-bottom: 0;
+    }
+
+    .argument p {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.85;
+      max-width: 620px;
+      margin-bottom: 18px;
+    }
+
+    .argument p strong { color: var(--text); font-weight: 500; }
+
+    .argument-link {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: var(--muted);
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--signal);
       text-decoration: none;
-      padding: 5px 10px;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      transition: color 0.15s, border-color 0.15s;
+      text-transform: uppercase;
+      margin-top: 6px;
+      transition: gap 0.2s, color 0.15s;
     }
+    .argument-link:hover { gap: 14px; color: var(--signal-bright); }
 
-    .mobile-tool-link:hover { color: var(--text); border-color: var(--dim); }
+    /* Hero dim line */
+    .hero-line2 { color: var(--dim) !important; }
 
-    @media (max-width: 860px) {
-      .sidebar { display: none; }
-      .content { padding: 0 20px; max-width: 100%; }
-      .content-header { padding: 32px 0 36px; }
-      .mobile-nav { display: flex; }
-      h1 { font-size: clamp(26px, 7vw, 36px); }
-      .subtitle { font-size: 16px; max-width: 100%; }
-      .body-text p { font-size: 16px; }
-      .pull p { font-size: 17px !important; }
-      .data-table { font-size: 13px; }
-      .data-table td:last-child { display: none; }
-      .data-table th:last-child { display: none; }
+    @media (max-width: 640px) {
+      .stream { grid-template-columns: 1fr; gap: 4px; }
+      .stream-right { text-align: left; }
+      .stream::before { left: -20px; right: -20px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Mobile nav -->
-  <nav class="mobile-nav">
-    <span class="mobile-wordmark">Open Primitive</span>
-    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">Primitives</button>
-  </nav>
-  <div class="mobile-tools" id="mobile-tools">
-    <a class="mobile-tool-link" href="https://flights.openprimitive.com"><span class="nav-dot nav-dot--indigo"></span>Dice Flights</a>
-    <a class="mobile-tool-link" href="https://cars.openprimitive.com"><span class="nav-dot nav-dot--steel"></span>Car Truth</a>
-    <a class="mobile-tool-link" href="https://health.openprimitive.com"><span class="nav-dot nav-dot--teal"></span>Does It Work</a>
-    <a class="mobile-tool-link" href="https://hospitals.openprimitive.com"><span class="nav-dot nav-dot--gold"></span>Hospital Quality</a>
-    <a class="mobile-tool-link" href="https://water.openprimitive.com"><span class="nav-dot nav-dot--blue"></span>Water Safety</a>
-    <a class="mobile-tool-link" href="https://drugs.openprimitive.com"><span class="nav-dot nav-dot--purple"></span>Drug Effects</a>
-    <a class="mobile-tool-link" href="https://recalls.openprimitive.com"><span class="nav-dot nav-dot--orange"></span>Food Recalls</a>
-  </div>
+  <div class="op-scan"></div>
 
-  <div class="layout">
+  <div class="op-page">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <a class="wordmark" href="/">Open<br>Primitive</a>
-
-      <div class="sidebar-section">
-        <span class="sidebar-label">Primitives</span>
-        <ul class="sidebar-nav">
-          <li><a href="https://flights.openprimitive.com" target="_blank"><span class="nav-dot nav-dot--indigo"></span>Dice Flights</a></li>
-          <li><a href="https://cars.openprimitive.com" target="_blank"><span class="nav-dot nav-dot--steel"></span>Car Truth</a></li>
-          <li><a href="https://health.openprimitive.com" target="_blank"><span class="nav-dot nav-dot--teal"></span>Does It Work</a></li>
-          <li><a href="https://hospitals.openprimitive.com" target="_blank"><span class="nav-dot nav-dot--gold"></span>Hospital Quality</a></li>
-          <li><a href="https://water.openprimitive.com" target="_blank"><span class="nav-dot nav-dot--blue"></span>Water Safety</a></li>
-          <li><a href="https://drugs.openprimitive.com" target="_blank"><span class="nav-dot nav-dot--purple"></span>Drug Effects</a></li>
-          <li><a href="https://recalls.openprimitive.com" target="_blank"><span class="nav-dot nav-dot--orange"></span>Food Recalls</a></li>
-        </ul>
+    <header class="op-header">
+      <a class="op-wordmark" href="/">Open Primitive</a>
+      <div class="op-header-right">
+        <span class="op-pulse"></span>
+        <span>7 streams active</span>
       </div>
+    </header>
 
-      <hr class="sidebar-divider" />
+    <section class="op-hero">
+      <div class="op-eyebrow">Federal primary sources · No AI · No summaries</div>
+      <h1 id="h1a">The government recorded it.</h1>
+      <h1 id="h1b" class="hero-line2">You have never seen it.</h1>
+      <p style="margin-top:28px;">
+        Seven interfaces to US federal databases. <strong>No AI. No summaries.</strong>
+        The flight delays, the hospital mortality rates, the drug adverse events —
+        the actual record, in a form you can read.
+      </p>
+    </section>
 
-      <div class="sidebar-section sidebar-toc">
-        <span class="sidebar-label">On this page</span>
-        <ul class="sidebar-nav">
-          <li><a href="#problem">The problem</a></li>
-          <li><a href="#search">What search did</a></li>
-          <li><a href="#ai">What AI did</a></li>
-          <li><a href="#gap">The translational gap</a></li>
-          <li><a href="#sources">The sources</a></li>
-          <li><a href="#what-it-does">What it does</a></li>
-          <li><a href="#what-it-doesnt">What it doesn't do</a></li>
-          <li><a href="#questions">Open questions</a></li>
-        </ul>
-      </div>
-    </aside>
+    <div class="op-label">Data streams</div>
 
-    <!-- Main content -->
-    <main class="content">
+    <div class="streams">
 
-      <header class="content-header">
-        <div class="kicker">Open Primitive</div>
-        <h1>The Case Against<br>the Translation Layer</h1>
-        <p class="subtitle">On search, AI, and what gets lost when someone else summarizes the record for you.</p>
-      </header>
-
-      <div class="body-text">
-
-        <h2 id="problem">The problem</h2>
-
-        <p>The most consequential information about your daily life is public. The government records it, indexes it, and publishes it. The DOT files every flight delay with tail number, cause code, and minute-level precision. NHTSA maintains crash test data for every vehicle sold in the United States, plus a database of every active recall and every fatality investigation. The National Library of Medicine indexes every peer-reviewed study published in the English language. CMS publishes patient outcome scores for every hospital in the country. The EPA tracks contaminant violations at every public water system. The FDA records every adverse drug event and every food recall.</p>
-
-        <p>Almost no one reads it. Not because it's hidden. Because it's not readable.</p>
-
-        <p>A flight delay report is a 47-column CSV. A crash test filing is a structured XML document. A clinical trial abstract assumes you understand what a hazard ratio is. The record exists. The interface to the record has never been built for a person making a decision.</p>
-
-        <p>Two industries promised to fix this. Neither did.</p>
-
-        <h2 id="search">What search did</h2>
-
-        <p>In 1998, Brin and Page published "The Anatomy of a Large-Scale Hypertextual Web Search Engine," introducing PageRank — the insight that a link from one document to another was an implicit citation, and that a document cited by many authoritative sources was likely authoritative itself.<sup>1</sup> The algorithm was elegant. The mission was genuine: organize the world's information and make it universally accessible.</p>
-
-        <p>Then they discovered advertising.</p>
-
-        <p>The search index that exists today is not optimized for accuracy. It is optimized for engagement, which correlates with accuracy only loosely and degrades over time as publishers learn to optimize for the index instead of the reader. A search for "is vitamin D effective" returns manufacturer pages, supplement retailers, health media that depends on supplement advertising, and a small number of actual studies buried behind pagination. The signal and the noise are presented with identical authority.</p>
-
-        <div class="pull">
-          <p>Search doesn't show you what is true. It shows you what has been linked to. Those are not the same thing.</p>
+      <a class="stream" href="https://hospitals.openprimitive.com" target="_blank" data-fill="85" data-delay="0">
+        <div class="stream-left">
+          <div class="stream-id-row">
+            <span class="stream-id">01</span>
+            <span class="stream-name">Hospital Quality</span>
+          </div>
+          <div class="stream-desc">Mortality rates, readmission rates, and patient experience scores for every Medicare-accepting hospital.</div>
+          <div class="op-bar-track"><div class="op-bar-fill"></div></div>
+          <div class="stream-source">CMS Care Compare · 6,000+ hospitals · updated monthly</div>
         </div>
-
-        <p>The deeper problem is structural. Search returns documents. The federal record is not a document — it is a database, a filing system, an XML feed. It does not have inbound links. It does not rank. The DOT's on-time performance data is not findable through search in any useful sense. You can find articles about it. You cannot find it.</p>
-
-        <h2 id="ai">What AI did</h2>
-
-        <p>Large language models trained on human feedback — RLHF, as described by Ouyang et al. in 2022<sup>2</sup> — are optimized to generate responses that humans rate as helpful, harmless, and honest. In practice, this means responses that sound authoritative, are structured clearly, and do not hedge excessively. Humans rate confident answers higher than uncertain ones, even when the uncertainty is warranted.</p>
-
-        <p>The result is a system that presents conclusions without showing its work. Ask an AI whether creatine supplementation improves athletic performance. It will tell you yes, with some qualifications. It will not show you the 53,000 studies in PubMed, the meta-analyses that found effect sizes ranging from negligible to significant depending on the population, the three large RCTs that contradict the headline finding, or the funding sources of the most-cited papers.</p>
-
-        <p>It cannot show you these things. It has no access to the primary record. It was trained on text that described the primary record, filtered through the same engagement-optimized search index described above, then further filtered by the preferences of human raters who had no more access to the original data than you do.</p>
-
-        <div class="pull">
-          <p>An AI translation isn't neutral. Something in the original doesn't survive the trip.</p>
+        <div class="stream-right">
+          <div class="stream-meta">6,000+<br>hospitals</div>
+          <div class="stream-arrow">→</div>
         </div>
+      </a>
 
-        <p>This is not a criticism of the technology. It is a description of what the technology is. RLHF-trained language models are extraordinarily good at synthesizing text into fluent, structured summaries. That capability is genuinely useful for many tasks. It is the wrong tool when the requirement is fidelity to primary sources, because synthesis by definition involves loss.</p>
+      <a class="stream" href="https://water.openprimitive.com" target="_blank" data-fill="71" data-delay="150">
+        <div class="stream-left">
+          <div class="stream-id-row">
+            <span class="stream-id">02</span>
+            <span class="stream-name">Water Safety</span>
+          </div>
+          <div class="stream-desc">Health-based violations and contaminant records at every public water system. Search by zip code.</div>
+          <div class="op-bar-track"><div class="op-bar-fill"></div></div>
+          <div class="stream-source">EPA SDWIS · 50,000+ water systems · updated quarterly</div>
+        </div>
+        <div class="stream-right">
+          <div class="stream-meta">50,000+<br>systems</div>
+          <div class="stream-arrow">→</div>
+        </div>
+      </a>
 
-        <h2 id="gap">The translational gap</h2>
+      <a class="stream" href="https://drugs.openprimitive.com" target="_blank" data-fill="93" data-delay="300">
+        <div class="stream-left">
+          <div class="stream-id-row">
+            <span class="stream-id">03</span>
+            <span class="stream-name">Drug Effects</span>
+          </div>
+          <div class="stream-desc">Adverse event reports for any drug on the US market. Unverified, unfiltered, unmediated by anyone.</div>
+          <div class="op-bar-track"><div class="op-bar-fill"></div></div>
+          <div class="stream-source">FDA FAERS · 15M+ reports · updated quarterly</div>
+        </div>
+        <div class="stream-right">
+          <div class="stream-meta">15M+<br>reports</div>
+          <div class="stream-arrow">→</div>
+        </div>
+      </a>
 
-        <p>Consider the specific case of a family deciding whether to purchase a vehicle. The available data is substantial. NHTSA's 5-Star Safety Ratings program generates frontal crash, side crash, and rollover scores for every rated vehicle, expressed as a star rating derived from physical tests with instrumented dummies.<sup>3</sup> The agency also maintains a database of every Technical Service Bulletin and Recall Campaign, searchable by make, model, and year. Complaints from owners — more than 10,000 filed monthly — are publicly accessible and full-text searchable.</p>
+      <a class="stream" href="https://recalls.openprimitive.com" target="_blank" data-fill="78" data-delay="450">
+        <div class="stream-left">
+          <div class="stream-id-row">
+            <span class="stream-id">04</span>
+            <span class="stream-name">Food Recalls</span>
+          </div>
+          <div class="stream-desc">Active food recall campaigns classified by severity. Class I means serious risk of injury or death.</div>
+          <div class="op-bar-track"><div class="op-bar-fill"></div></div>
+          <div class="stream-source">FDA Enforcement · continuous updates</div>
+        </div>
+        <div class="stream-right">
+          <div class="stream-meta">Class I<br>tracked</div>
+          <div class="stream-arrow">→</div>
+        </div>
+      </a>
 
-        <p>The typical consumer interaction with this data is to ask a salesperson, read a magazine review, or — increasingly — ask an AI assistant. None of these channels surfaces the primary record. The salesperson has an incentive. The review is written by a journalist who did not read the crash test methodology. The AI summarizes text that described summaries of the original data.</p>
+      <a class="stream" href="https://flights.openprimitive.com" target="_blank" data-fill="88" data-delay="600">
+        <div class="stream-left">
+          <div class="stream-id-row">
+            <span class="stream-id">05</span>
+            <span class="stream-name">Flight Delays</span>
+          </div>
+          <div class="stream-desc">Real airline delay performance ranked by on-time percentage. Roll to see who's actually running on time.</div>
+          <div class="op-bar-track"><div class="op-bar-fill"></div></div>
+          <div class="stream-source">AviationStack · live updates · 8 US carriers</div>
+        </div>
+        <div class="stream-right">
+          <div class="stream-meta">8 carriers<br>ranked live</div>
+          <div class="stream-arrow">→</div>
+        </div>
+      </a>
 
-        <p>At each step in that chain, something is lost. The specific star ratings. The raw injury probability scores underlying the stars. The open recall status. The pattern of complaints that appears in the database before a recall is issued.</p>
+      <a class="stream" href="https://cars.openprimitive.com" target="_blank" data-fill="82" data-delay="750">
+        <div class="stream-left">
+          <div class="stream-id-row">
+            <span class="stream-id">06</span>
+            <span class="stream-name">Vehicle Safety</span>
+          </div>
+          <div class="stream-desc">NHTSA crash test scores, active recall campaigns, and owner-filed complaints by make and model.</div>
+          <div class="op-bar-track"><div class="op-bar-fill"></div></div>
+          <div class="stream-source">NHTSA · 50,000+ vehicles rated · continuous</div>
+        </div>
+        <div class="stream-right">
+          <div class="stream-meta">50,000+<br>vehicles</div>
+          <div class="stream-arrow">→</div>
+        </div>
+      </a>
 
-        <p>The data that would change the decision is available. The interface that would surface it has never been built.</p>
+      <a class="stream" href="https://health.openprimitive.com" target="_blank" data-fill="96" data-delay="900">
+        <div class="stream-left">
+          <div class="stream-id-row">
+            <span class="stream-id">07</span>
+            <span class="stream-name">Health Evidence</span>
+          </div>
+          <div class="stream-desc">Publication volume and study counts for any health claim. Research signal — not endorsement, not proof.</div>
+          <div class="op-bar-track"><div class="op-bar-fill"></div></div>
+          <div class="stream-source">PubMed / MEDLINE · 35M+ studies · updated daily</div>
+        </div>
+        <div class="stream-right">
+          <div class="stream-meta">35M+<br>studies</div>
+          <div class="stream-arrow">→</div>
+        </div>
+      </a>
 
-        <h2 id="sources">The sources</h2>
+    </div>
 
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Source</th>
-              <th>What it contains</th>
-              <th>Updates</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>BTS Form 41 / ATADS</td>
-              <td>Flight-level on-time, cancellation, and cause data for all US carriers, reported monthly via the DOT Bureau of Transportation Statistics.</td>
-              <td>Monthly</td>
-            </tr>
-            <tr>
-              <td>FAA NASSTATUS</td>
-              <td>Real-time National Airspace System status: ground stops, ground delay programs, and arrival/departure delays at every US airport.</td>
-              <td>Live</td>
-            </tr>
-            <tr>
-              <td>NHTSA 5-Star Ratings</td>
-              <td>Frontal, side, and rollover crash test scores for every tested vehicle, derived from probability of serious injury in standardized physical tests.</td>
-              <td>Per model year</td>
-            </tr>
-            <tr>
-              <td>NHTSA Complaints &amp; Recalls</td>
-              <td>Every owner-submitted complaint and every active recall campaign, searchable by vehicle. Approximately 10,000 complaints filed per month.</td>
-              <td>Continuous</td>
-            </tr>
-            <tr>
-              <td>PubMed / MEDLINE</td>
-              <td>35+ million citations to peer-reviewed biomedical literature, indexed by the National Library of Medicine, searchable by MeSH term.</td>
-              <td>Daily</td>
-            </tr>
-            <tr>
-              <td>CMS Care Compare</td>
-              <td>Star ratings, mortality rates, readmission rates, and patient experience scores for every hospital that accepts Medicare. Filed monthly.</td>
-              <td>Monthly</td>
-            </tr>
-            <tr>
-              <td>EPA SDWIS</td>
-              <td>Violation records for every public water system in the US, distinguishing health-based violations from monitoring and reporting failures.</td>
-              <td>Quarterly</td>
-            </tr>
-            <tr>
-              <td>FDA FAERS</td>
-              <td>Adverse event reports submitted by patients, physicians, and manufacturers for every drug on the US market. Unverified but unfiltered.</td>
-              <td>Quarterly</td>
-            </tr>
-            <tr>
-              <td>FDA Enforcement</td>
-              <td>Every food, drug, and device recall published by the FDA, classified by severity: Class I (serious health risk), Class II, Class III.</td>
-              <td>Continuous</td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="op-label" style="margin-top:0;">The argument</div>
 
-        <h2 id="what-it-does">What Open Primitive does</h2>
+    <div class="argument">
+      <p>
+        AI doesn't give you data. It gives you <strong>a summary of a summary</strong> — text
+        trained on descriptions of the record, filtered through an engagement-optimized search
+        index, then further filtered by human raters who had no more access to the original than
+        you do.
+      </p>
+      <p>
+        The federal record exists. The DOT files every flight delay. The FDA records every adverse
+        event. The EPA tracks every contaminant violation. Most people never see it — not because
+        it's hidden, but because <strong>no one built an interface to it.</strong>
+      </p>
+      <a class="argument-link" href="/manifesto.html">
+        Read the full argument →
+      </a>
+    </div>
 
-        <p>Open Primitive is not an AI. It does not summarize. It does not interpret. It connects to primary-source federal databases and renders their output in a form a person can read and act on.</p>
+    <footer class="op-footer">
+      <span class="op-footer-text">Open Primitive · David Hamilton</span>
+      <span class="op-footer-text">openprimitive.com</span>
+    </footer>
 
-        <p>The design constraint is strict: every number shown must be traceable to a specific filing, a specific database record, a specific row in a government dataset. If the underlying data is ambiguous, the interface shows the ambiguity. If the data is missing, it says so.</p>
-
-        <p>The current primitives cover seven categories of federal data where the gap between the published record and public awareness is widest and the stakes of the decisions are highest: air travel, vehicle safety, health evidence, hospital quality, water quality, drug adverse events, and food safety.</p>
-
-        <h2 id="what-it-doesnt">What it doesn't do</h2>
-
-        <p>Open Primitive does not tell you what to decide. It shows you what the record says. The difference matters.</p>
-
-        <p>A tool that tells you "Alaska Airlines is the safest choice" has made a judgment about how to weight on-time performance against cancellation rates against your specific route and departure time. That judgment belongs to you. A tool that shows you the DOT data, the FAA live status, and the BTS track record for each carrier gives you what you need to make it.</p>
-
-        <p>The goal is not to replace judgment. It is to restore the precondition for it: access to the actual record, in a form you can read.</p>
-
-        <h2 id="questions">Open questions</h2>
-
-        <p>Several design problems remain unsolved. Federal databases are not designed for real-time consumer queries — rate limits, schema changes, and data gaps are operational realities, not edge cases. The line between "making data readable" and "making data interpretive" is not always clear; a composite score that ranks airlines involves weighting choices that embed assumptions. As more primitives are added, the question of what counts as "primary source" becomes harder to answer cleanly.</p>
-
-        <p>These problems are worth naming because they are not decorative. They are the reasons no one has built this before. The commercial incentive runs in the opposite direction: AI answers are cheaper to produce, easier to scale, and more satisfying to users in the short term than raw data interfaces. The correct answer to "is this car safe" is not a star rating. It is a 90-minute reading session. Most people will not do that. Open Primitive tries to make it possible in five minutes.</p>
-
-        <p><strong>Whether that is enough is an open question.</strong> The goal is to make the primary record accessible enough that more people use it, more often, for the decisions where it matters most.</p>
-
-      </div>
-
-      <div class="references">
-        <h2>References</h2>
-        <ol>
-          <li>Brin, S. &amp; Page, L. (1998). The anatomy of a large-scale hypertextual web search engine. <em>Computer Networks and ISDN Systems</em>, 30(1–7), 107–117.</li>
-          <li>Ouyang, L. et al. (2022). Training language models to follow instructions with human feedback. <em>arXiv</em> 2203.02155.</li>
-          <li>NHTSA (2024). New Car Assessment Program (NCAP) 5-Star Safety Ratings Methodology. US Department of Transportation.</li>
-          <li>Bureau of Transportation Statistics (2024). Airline On-Time Statistics and Delay Causes. Form 41 / ATADS. US Department of Transportation.</li>
-          <li>National Library of Medicine (2024). PubMed Overview. US National Institutes of Health.</li>
-        </ol>
-      </div>
-
-      <footer class="content-footer">
-        Open Primitive · Built by David Hamilton
-      </footer>
-
-    </main>
   </div>
 
   <script>
-    function toggleMobileMenu() {
-      const el = document.getElementById('mobile-tools');
-      el.style.display = el.style.display === 'flex' ? 'none' : 'flex';
+    // Scramble effect
+    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_/.<>!?';
+
+    function scramble(el, duration, delay) {
+      const original = el.textContent;
+      const go = () => {
+        const start = Date.now();
+        const run = () => {
+          const p = Math.min((Date.now() - start) / duration, 1);
+          const resolved = Math.floor(p * original.length);
+          let out = '';
+          for (let i = 0; i < original.length; i++) {
+            const c = original[i];
+            if (i < resolved || c === ' ' || c === '.' || c === ',') out += c;
+            else out += CHARS[Math.floor(Math.random() * CHARS.length)];
+          }
+          el.textContent = out;
+          if (p < 1) requestAnimationFrame(run);
+          else el.textContent = original;
+        };
+        requestAnimationFrame(run);
+      };
+      setTimeout(go, delay);
     }
+
+    // Fill bars
+    function fillBars() {
+      document.querySelectorAll('.stream').forEach(stream => {
+        const fill = +stream.dataset.fill;
+        const delay = +stream.dataset.delay;
+        const bar = stream.querySelector('.op-bar-fill');
+        if (bar) setTimeout(() => { bar.style.width = fill + '%'; }, delay + 500);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      scramble(document.getElementById('h1a'), 1000, 600);
+      scramble(document.getElementById('h1b'), 900, 1100);
+      fillBars();
+    });
   </script>
 
 </body>
