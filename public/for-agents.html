@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>For Agents — Open Primitive</title>
-  <meta name="description" content="Point your AI agent at primary-source federal data. Open Primitive gives AI workflows a direct, citable, verifiable ground truth layer — no summaries, no hallucinations." />
+  <title>Open Primitive Protocol — Integration Guide</title>
+  <meta name="description" content="Technical specification for the Open Primitive Protocol. Signed, sourced, scored responses from federal data. REST API, MCP server, natural language endpoint." />
   <link rel="stylesheet" href="/primitive.css" />
   <style>
     .agents-page {
-      max-width: 720px;
+      max-width: 780px;
       margin: 0 auto;
       padding: 0 var(--space-12) 96px;
     }
@@ -22,35 +22,32 @@
       justify-content: space-between;
     }
 
-    .agents-header {
+    /* Hero */
+    .agents-hero {
       padding: var(--space-16) 0 var(--space-12);
       border-bottom: 1px solid var(--border);
       margin-bottom: var(--space-16);
     }
 
-    .agents-header h1 {
+    .agents-hero h1 {
       font-family: var(--font-display);
-      font-size: clamp(30px, 5vw, 48px);
+      font-size: clamp(28px, 4.5vw, 44px);
       font-weight: 700;
       letter-spacing: -0.025em;
-      line-height: 1.05;
+      line-height: 1.08;
       color: var(--text);
       margin-bottom: var(--space-5);
     }
 
-    .agents-header h1 span {
-      color: var(--muted);
-    }
-
-    .agents-subtitle {
-      font-size: 19px;
+    .agents-hero-sub {
+      font-size: 18px;
       color: var(--muted);
       line-height: 1.6;
-      max-width: 540px;
+      max-width: 580px;
     }
 
-    /* Body text shared styles */
-    .body-text h2 {
+    /* Section headers */
+    .section-label {
       font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 600;
@@ -63,117 +60,105 @@
       gap: var(--space-4);
     }
 
-    .body-text h2::after {
+    .section-label::after {
       content: '';
       flex: 1;
       height: 1px;
       background: var(--border);
     }
 
-    .body-text h2:first-child { margin-top: 0; }
+    .section-label:first-child { margin-top: 0; }
 
-    .body-text p {
-      font-size: 18px;
+    /* Body text */
+    .body p {
+      font-size: 16px;
       color: var(--muted);
-      line-height: 1.85;
-      margin-bottom: var(--space-5);
+      line-height: 1.75;
+      margin-bottom: var(--space-4);
     }
 
-    .body-text p strong { color: var(--body); font-weight: 600; }
-    .body-text p:last-child { margin-bottom: 0; }
+    .body p strong { color: var(--body); font-weight: 600; }
 
-    /* Pull quote */
-    .pull {
-      border-left: 3px solid var(--accent);
-      padding: var(--space-2) 0 var(--space-2) var(--space-6);
-      margin: var(--space-8) 0;
+    /* Code blocks */
+    .code-block {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      padding: var(--space-5);
+      margin: var(--space-5) 0;
+      overflow-x: auto;
     }
 
-    .pull p {
-      font-family: var(--font-display) !important;
-      font-size: 22px !important;
-      color: var(--text) !important;
-      font-weight: 500;
-      line-height: 1.5 !important;
-      letter-spacing: -0.01em;
-      margin-bottom: 0 !important;
-    }
-
-    /* Argument blocks */
-    .argument-blocks {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-8);
-      margin: var(--space-8) 0;
-    }
-
-    .argument-block-label {
+    .code-block-label {
       font-family: var(--font-mono);
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--dim);
+      color: #555;
       margin-bottom: var(--space-3);
     }
 
-    .argument-block p {
-      font-size: 15px !important;
-      line-height: 1.75 !important;
-      margin-bottom: 0 !important;
+    .code-block pre {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.7;
+      color: #d4d4d4;
+      white-space: pre;
+      overflow-x: auto;
     }
 
-    /* Pattern cards */
-    .agent-patterns {
+    .code-block pre .key { color: #9cdcfe; }
+    .code-block pre .str { color: #ce9178; }
+    .code-block pre .num { color: #b5cea8; }
+    .code-block pre .comment { color: #555; }
+    .code-block pre .kw { color: #c586c0; }
+    .code-block pre .fn { color: #dcdcaa; }
+    .code-block pre .var { color: #4ec9b0; }
+
+    /* Inline code */
+    code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: rgba(0,0,0,0.06);
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--body);
+    }
+
+    /* Tool list */
+    .tool-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr 1fr;
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
-      margin: var(--space-8) 0;
+      margin: var(--space-5) 0;
     }
 
-    .agent-pattern {
-      background: var(--bg);
-      padding: var(--space-6);
-    }
-
-    .agent-pattern-label {
+    .tool-item {
+      background: var(--bg-card);
+      padding: var(--space-3) var(--space-4);
       font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+      font-size: 13px;
+      color: var(--body);
+    }
+
+    .tool-item span {
       color: var(--dim);
-      margin-bottom: var(--space-3);
-    }
-
-    .agent-pattern-title {
-      font-family: var(--font-display);
-      font-size: 17px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: var(--space-3);
-      letter-spacing: -0.01em;
-      line-height: 1.25;
-    }
-
-    .agent-pattern p {
-      font-size: 13px !important;
-      color: var(--muted);
-      line-height: 1.65 !important;
-      margin-bottom: 0 !important;
+      font-size: 12px;
     }
 
     /* Source table */
-    .source-table {
+    .field-table {
       width: 100%;
       border-collapse: collapse;
-      margin: var(--space-8) 0;
+      margin: var(--space-5) 0;
       font-size: 13px;
     }
 
-    .source-table th {
+    .field-table th {
       text-align: left;
       font-family: var(--font-mono);
       font-size: 10px;
@@ -185,36 +170,20 @@
       border-bottom: 1.5px solid var(--border);
     }
 
-    .source-table td {
+    .field-table td {
       color: var(--muted);
-      padding: var(--space-4) var(--space-4) var(--space-4) 0;
+      padding: var(--space-3) var(--space-4) var(--space-3) 0;
       border-bottom: 1px solid var(--border);
       vertical-align: top;
-      font-size: 13px;
       line-height: 1.55;
     }
 
-    .source-table td:first-child {
+    .field-table td:first-child {
+      font-family: var(--font-mono);
+      font-size: 13px;
       color: var(--body);
-      font-family: var(--font-display);
-      font-size: 14px;
-      font-weight: 600;
+      font-weight: 500;
       white-space: nowrap;
-      padding-right: var(--space-5);
-    }
-
-    .source-table td.source-agency {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--dim);
-      white-space: nowrap;
-    }
-
-    .source-table td.source-url {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--accent);
-      word-break: break-all;
     }
 
     /* Notice */
@@ -227,55 +196,6 @@
       color: var(--muted);
       line-height: 1.65;
       margin: var(--space-5) 0;
-    }
-
-    /* CTA */
-    .agents-cta {
-      margin-top: var(--space-16);
-      padding-top: var(--space-10);
-      border-top: 1px solid var(--border);
-    }
-
-    .agents-cta h2 {
-      font-family: var(--font-display);
-      font-size: clamp(22px, 3.5vw, 30px);
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-      margin-bottom: var(--space-4);
-    }
-
-    .agents-cta h2 span { color: var(--muted); }
-
-    .agents-cta p {
-      font-size: 17px;
-      color: var(--muted);
-      line-height: 1.65;
-      max-width: 500px;
-      margin-bottom: var(--space-7);
-    }
-
-    .agents-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-3);
-    }
-
-    .agents-links a {
-      font-family: var(--font-display);
-      font-size: 17px;
-      font-weight: 500;
-      color: var(--accent);
-      text-decoration: none;
-      padding: var(--space-3) var(--space-5);
-      border: 1.5px solid var(--border);
-      transition: border-color 0.15s, color 0.15s;
-    }
-
-    .agents-links a:hover {
-      border-color: var(--accent);
-      color: #8a3d21;
     }
 
     /* Footer */
@@ -301,45 +221,22 @@
     .agents-footer a { color: var(--dim); text-decoration: none; }
     .agents-footer a:hover { color: var(--accent); }
 
-    /* Code blocks */
-    .code-block {
-      background: #1a1a1a;
-      border-radius: 4px;
-      padding: var(--space-5);
-      margin: var(--space-4) 0;
-      overflow-x: auto;
+    /* Links */
+    .body a {
+      color: var(--accent);
+      text-decoration: none;
     }
+    .body a:hover { text-decoration: underline; }
 
-    .code-block-label {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #666;
-      margin-bottom: var(--space-3);
+    /* Manifest block */
+    .manifest-fields {
+      margin: var(--space-5) 0;
     }
-
-    .code-block pre {
-      margin: 0;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      line-height: 1.7;
-      color: #e0e0e0;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
-
-    .code-block pre .comment { color: #666; }
 
     @media (max-width: 640px) {
       .agents-page { padding: 0 var(--space-6) 72px; }
-      .body-text p { font-size: 17px; }
-      .pull p { font-size: 19px !important; }
-      .agent-patterns { grid-template-columns: 1fr; }
-      .source-table { font-size: 12px; }
-      .source-table td.source-agency,
-      .source-table td.source-url { white-space: normal; }
+      .tool-grid { grid-template-columns: 1fr; }
+      .code-block pre { font-size: 12px; }
     }
   </style>
 </head>
@@ -350,173 +247,323 @@
       <a class="op-wordmark" href="/">Open Primitive</a>
       <div class="op-header-right">
         <a href="/">All primitives</a>
-        <span class="op-header-sep">·</span>
+        <span class="op-header-sep">&middot;</span>
         <a href="/manifesto.html">Why</a>
       </div>
     </nav>
 
-    <header class="agents-header">
-      <div class="op-eyebrow">For Developers · AI Workflows · Agent Tooling</div>
-      <h1>Your AI is only as good<br><span>as what it knows.</span></h1>
-      <p class="agents-subtitle">Most agents make things up when they don't know. Not out of malice — out of training. They're optimized to sound right, not to show their work. Open Primitive gives you a ground truth layer to point them at instead.</p>
+    <header class="agents-hero">
+      <div class="op-eyebrow">Open Primitive Protocol &middot; v1</div>
+      <h1>Integrate with the Open Primitive Protocol</h1>
+      <p class="agents-hero-sub">Every response is signed, sourced, and scored. Your agent gets data it can trust and cite.</p>
     </header>
 
-    <div class="body-text">
+    <div class="body">
 
-      <h2>Why primary source matters for agents</h2>
+      <!-- ── SECTION 1: THE ENVELOPE ── -->
 
-      <div class="pull">
-        <p>An agent that hallucinates a drug side effect isn't failing at intelligence. It's failing at citation. The fix isn't a better model. It's a better source.</p>
+      <div class="section-label">01 &mdash; The Envelope</div>
+
+      <p>Every OPP response wraps federal data in a standard envelope. The data field carries the query result. The confidence field tells your agent how much to trust it. The proof field lets you verify the response was not tampered with.</p>
+
+      <div class="code-block">
+        <div class="code-block-label">OPP Response Envelope</div>
+        <pre>{
+  <span class="key">"domain"</span>: <span class="str">"drugs"</span>,
+  <span class="key">"source"</span>: <span class="str">"FDA FAERS"</span>,
+  <span class="key">"source_url"</span>: <span class="str">"https://api.fda.gov"</span>,
+  <span class="key">"freshness"</span>: <span class="str">"2026-03-19T14:00:00Z"</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"drug"</span>: <span class="str">"metformin"</span>,
+    <span class="key">"totalEvents"</span>: <span class="num">428748</span>,
+    <span class="key">"seriousEvents"</span>: <span class="num">287312</span>,
+    <span class="key">"deaths"</span>: <span class="num">14891</span>,
+    <span class="key">"topReactions"</span>: [
+      { <span class="key">"reaction"</span>: <span class="str">"DRUG INEFFECTIVE"</span>, <span class="key">"count"</span>: <span class="num">22847</span> },
+      { <span class="key">"reaction"</span>: <span class="str">"NAUSEA"</span>, <span class="key">"count"</span>: <span class="num">18294</span> },
+      { <span class="key">"reaction"</span>: <span class="str">"DIARRHOEA"</span>, <span class="key">"count"</span>: <span class="num">16103</span> }
+    ]
+  },
+  <span class="key">"confidence"</span>: {
+    <span class="key">"completeness"</span>: <span class="num">0.10</span>,
+    <span class="key">"methodology"</span>: <span class="str">"voluntary-reporting"</span>,
+    <span class="key">"note"</span>: <span class="str">"FDA FAERS captures 1-10% of adverse events"</span>
+  },
+  <span class="key">"citations"</span>: {
+    <span class="key">"statement"</span>: <span class="str">"According to FDA FAERS, metformin has 428,748 reported adverse events"</span>,
+    <span class="key">"source_url"</span>: <span class="str">"https://api.fda.gov"</span>
+  },
+  <span class="key">"proof"</span>: {
+    <span class="key">"type"</span>: <span class="str">"DataIntegrityProof"</span>,
+    <span class="key">"cryptosuite"</span>: <span class="str">"eddsa-jcs-2022"</span>,
+    <span class="key">"created"</span>: <span class="str">"2026-03-19T14:00:00Z"</span>,
+    <span class="key">"verificationMethod"</span>: <span class="str">"https://openprimitive.com/.well-known/opp.json#key-1"</span>,
+    <span class="key">"proofValue"</span>: <span class="str">"z3FXQqFcCCAMdMgp8GrXKbTnVEr4A8WjYvN..."</span>
+  }
+}</pre>
       </div>
 
-      <div class="argument-blocks">
-        <div class="argument-block">
-          <div class="argument-block-label">Hallucination vs. citation</div>
-          <p>Language models fill gaps with confident estimates. When asked about adverse events for metformin, a model trained on 2023 data will give you an answer — but the FDA FAERS database has 15 million filed reports, updated quarterly, and the model hasn't read them. It read text about them. Point the model at the source before it answers.</p>
-        </div>
-        <div class="argument-block">
-          <div class="argument-block-label">Scraping vs. primary source</div>
-          <p>Web scraping is fragile. A news article about a food recall went live yesterday, was updated twice, and the URL changed. The FDA enforcement database entry is stable, structured, and directly queryable. The difference between citing a news story and citing the source is the difference between approximate and verifiable.</p>
-        </div>
-        <div class="argument-block">
-          <div class="argument-block-label">Confidence vs. traceability</div>
-          <p>Open Primitive doesn't add interpretation. Every number on the page traces to a specific government filing — a source agency, a database ID, a date. When your agent cites it, it's citing a record. Not a summary of a record.</p>
-        </div>
-      </div>
+      <table class="field-table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>domain</td><td>Which data domain this response covers</td></tr>
+          <tr><td>source</td><td>The federal agency or database that produced the underlying data</td></tr>
+          <tr><td>source_url</td><td>Direct link to the upstream API or dataset</td></tr>
+          <tr><td>freshness</td><td>ISO 8601 timestamp of when this data was fetched from the source</td></tr>
+          <tr><td>data</td><td>The query result. Structure varies by domain.</td></tr>
+          <tr><td>confidence</td><td>How complete and reliable this data is, with methodology context</td></tr>
+          <tr><td>citations</td><td>A pre-built citation your agent can drop into output verbatim</td></tr>
+          <tr><td>proof</td><td>Cryptographic signature proving this response originated from Open Primitive</td></tr>
+        </tbody>
+      </table>
 
-      <h2>How to connect an agent</h2>
+      <!-- ── SECTION 2: QUICK START ── -->
 
-      <p>Each primitive is a live query interface with a stable URL structure. Fetch it, pass the result to your model as context, or use the URL as a citation target in a retrieval-augmented generation pipeline. Free tier: 500 calls/month, no credit card. For production pipelines, API keys at <a href="https://api.openprimitive.com/pricing.html" style="color:var(--accent);text-decoration:none;">api.openprimitive.com/pricing.html</a>.</p>
+      <div class="section-label">02 &mdash; Quick Start</div>
 
-      <div class="agent-patterns">
-        <div class="agent-pattern">
-          <div class="agent-pattern-label">Pattern 01</div>
-          <div class="agent-pattern-title">As context</div>
-          <p>Fetch the result for a query and pass the structured output to your model before it answers. The model now has primary-source data, not training-data inference.<br><br><em style="color:var(--dim);font-size:12px;">"Before answering about this airline's safety record, fetch the current DOT performance data from Open Primitive."</em></p>
-        </div>
-        <div class="agent-pattern">
-          <div class="agent-pattern-label">Pattern 02</div>
-          <div class="agent-pattern-title">As citation</div>
-          <p>Include the primitive URL as a grounding citation in your agent's output. Instead of asserting a fact, your agent outputs: "According to the DOT record at [source], United's on-time rate was 79.2%." Verifiable. Not inferred.</p>
-        </div>
-        <div class="agent-pattern">
-          <div class="agent-pattern-label">Pattern 03</div>
-          <div class="agent-pattern-title">As ground truth check</div>
-          <p>Use the primitives to verify or refute a claim before including it in generated output. Ask your agent to check a health claim against PubMed study volume before asserting it as established science.</p>
-        </div>
-      </div>
-
-      <div class="op-notice-dim">
-        These interfaces are designed for readability, not bulk data export. For high-volume pipelines, use the underlying federal APIs directly — every primitive links to its original source on every result page.
-      </div>
-
-      <h2>Quick start</h2>
-
-      <p>The API lives at <strong><a href="https://api.openprimitive.com" style="color:var(--accent);text-decoration:none;">api.openprimitive.com</a></strong>. Hit any endpoint. Get structured JSON back.</p>
+      <p>The API lives at <strong>api.openprimitive.com</strong>. No API key required for the free tier (500 requests/month).</p>
 
       <div class="code-block">
         <div class="code-block-label">curl</div>
-        <pre>curl https://api.openprimitive.com/v1/drugs?name=metformin</pre>
+        <pre>curl https://api.openprimitive.com/v1/drugs?name=metformin
+
+<span class="comment"># Water safety by ZIP</span>
+curl https://api.openprimitive.com/v1/water?zip=10001
+
+<span class="comment"># Hospital quality by name</span>
+curl https://api.openprimitive.com/v1/hospitals?name=mayo+clinic
+
+<span class="comment"># Car safety by make/model/year</span>
+curl https://api.openprimitive.com/v1/cars?make=toyota&amp;model=camry&amp;year=2024</pre>
       </div>
 
       <div class="code-block">
         <div class="code-block-label">JavaScript</div>
-        <pre>const res = await fetch('https://api.openprimitive.com/v1/drugs?name=metformin');
-const data = await res.json();
-<span class="comment">// data.totalEvents = 428748</span>
-<span class="comment">// data.topReactions[0].reaction = "NAUSEA"</span></pre>
+        <pre><span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'https://api.openprimitive.com/v1/drugs?name=metformin'</span>);
+<span class="kw">const</span> envelope = <span class="kw">await</span> res.<span class="fn">json</span>();
+
+<span class="comment">// Use the pre-built citation</span>
+console.<span class="fn">log</span>(envelope.citations.statement);
+<span class="comment">// → "According to FDA FAERS, metformin has 428,748 reported adverse events"</span>
+
+<span class="comment">// Check data freshness</span>
+console.<span class="fn">log</span>(envelope.freshness);
+<span class="comment">// → "2026-03-19T14:00:00Z"</span>
+
+<span class="comment">// Inspect confidence before trusting</span>
+console.<span class="fn">log</span>(envelope.confidence.completeness);
+<span class="comment">// → 0.10 (FAERS captures ~10% of events)</span></pre>
       </div>
 
       <div class="code-block">
         <div class="code-block-label">Python</div>
-        <pre>import requests
-data = requests.get('https://api.openprimitive.com/v1/water?zip=10001').json()
-<span class="comment"># data['violations']['healthBased'] → list of EPA violations</span></pre>
+        <pre><span class="kw">import</span> requests
+
+envelope = requests.<span class="fn">get</span>(
+    <span class="str">'https://api.openprimitive.com/v1/water'</span>,
+    params={<span class="str">'zip'</span>: <span class="str">'10001'</span>}
+).<span class="fn">json</span>()
+
+<span class="comment"># The data, the citation, and the confidence score</span>
+<span class="fn">print</span>(envelope[<span class="str">'data'</span>][<span class="str">'violations'</span>])
+<span class="fn">print</span>(envelope[<span class="str">'citations'</span>][<span class="str">'statement'</span>])
+<span class="fn">print</span>(envelope[<span class="str">'confidence'</span>][<span class="str">'completeness'</span>])</pre>
+      </div>
+
+      <!-- ── SECTION 3: MCP SERVER ── -->
+
+      <div class="section-label">03 &mdash; MCP Server</div>
+
+      <p>Add Open Primitive to Claude, Cursor, or any MCP-compatible client. One line in your config.</p>
+
+      <div class="code-block">
+        <div class="code-block-label">claude_desktop_config.json</div>
+        <pre>{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"open-primitive"</span>: {
+      <span class="key">"command"</span>: <span class="str">"npx"</span>,
+      <span class="key">"args"</span>: [<span class="str">"-y"</span>, <span class="str">"open-primitive-mcp"</span>]
+    }
+  }
+}</pre>
+      </div>
+
+      <p>Once connected, your agent has 13 tools:</p>
+
+      <div class="tool-grid">
+        <div class="tool-item">lookup_drug <span>-- adverse events by drug name</span></div>
+        <div class="tool-item">lookup_drug_interactions <span>-- interaction risks</span></div>
+        <div class="tool-item">check_water_safety <span>-- violations by ZIP</span></div>
+        <div class="tool-item">check_food_recalls <span>-- active FDA recalls</span></div>
+        <div class="tool-item">lookup_hospital <span>-- quality scores by name</span></div>
+        <div class="tool-item">compare_hospitals <span>-- side-by-side comparison</span></div>
+        <div class="tool-item">lookup_car_safety <span>-- crash ratings, recalls</span></div>
+        <div class="tool-item">check_car_recalls <span>-- open recalls by VIN</span></div>
+        <div class="tool-item">search_health_claims <span>-- PubMed study volume</span></div>
+        <div class="tool-item">check_flight_risk <span>-- delay probability</span></div>
+        <div class="tool-item">ask_question <span>-- natural language query</span></div>
+        <div class="tool-item">get_safety_report <span>-- multi-domain by ZIP</span></div>
+        <div class="tool-item">compare_items <span>-- cross-domain comparison</span></div>
       </div>
 
       <div class="op-notice-dim">
-        Free tier: 500 calls/month, no credit card. For production pipelines, API keys at <a href="https://api.openprimitive.com/pricing.html" style="color:var(--accent);text-decoration:none;">api.openprimitive.com/pricing.html</a>.
+        Each tool returns the full OPP envelope. Your agent gets the data, the confidence score, and a ready-to-use citation in one call.
       </div>
 
-      <div class="op-notice-dim">
-        Run our MCP server locally and Claude can query all 13 federal data domains as tools. Details at <a href="https://api.openprimitive.com" style="color:var(--accent);text-decoration:none;">api.openprimitive.com</a>.
+      <!-- ── SECTION 4: NATURAL LANGUAGE ── -->
+
+      <div class="section-label">04 &mdash; Natural Language</div>
+
+      <p>Your agent does not need to know which domain to query. Ask a plain question. The router figures out the domain and returns the same signed envelope.</p>
+
+      <div class="code-block">
+        <div class="code-block-label">Request</div>
+        <pre>curl "https://api.openprimitive.com/v1/ask?q=is+the+water+safe+in+10001"</pre>
       </div>
 
-      <h2>The seven primitives as data sources</h2>
+      <div class="code-block">
+        <div class="code-block-label">Response</div>
+        <pre>{
+  <span class="key">"domain"</span>: <span class="str">"water"</span>,
+  <span class="key">"source"</span>: <span class="str">"EPA SDWIS"</span>,
+  <span class="key">"source_url"</span>: <span class="str">"https://sdwis.epa.gov"</span>,
+  <span class="key">"freshness"</span>: <span class="str">"2026-03-19T14:00:00Z"</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"zip"</span>: <span class="str">"10001"</span>,
+    <span class="key">"system"</span>: <span class="str">"NEW YORK CITY DEP"</span>,
+    <span class="key">"populationServed"</span>: <span class="num">8336817</span>,
+    <span class="key">"violations"</span>: {
+      <span class="key">"healthBased"</span>: <span class="num">0</span>,
+      <span class="key">"monitoring"</span>: <span class="num">2</span>,
+      <span class="key">"total"</span>: <span class="num">2</span>
+    }
+  },
+  <span class="key">"confidence"</span>: {
+    <span class="key">"completeness"</span>: <span class="num">0.85</span>,
+    <span class="key">"methodology"</span>: <span class="str">"regulatory-reporting"</span>,
+    <span class="key">"note"</span>: <span class="str">"EPA SDWIS covers all public water systems; private wells excluded"</span>
+  },
+  <span class="key">"citations"</span>: {
+    <span class="key">"statement"</span>: <span class="str">"According to EPA SDWIS, the water system serving ZIP 10001 (NEW YORK CITY DEP) has 0 health-based violations and 2 monitoring violations"</span>,
+    <span class="key">"source_url"</span>: <span class="str">"https://sdwis.epa.gov"</span>
+  },
+  <span class="key">"proof"</span>: {
+    <span class="key">"type"</span>: <span class="str">"DataIntegrityProof"</span>,
+    <span class="key">"cryptosuite"</span>: <span class="str">"eddsa-jcs-2022"</span>,
+    <span class="key">"created"</span>: <span class="str">"2026-03-19T14:00:00Z"</span>,
+    <span class="key">"verificationMethod"</span>: <span class="str">"https://openprimitive.com/.well-known/opp.json#key-1"</span>,
+    <span class="key">"proofValue"</span>: <span class="str">"z8kJd2xVnPqR7mLwA5tYcN3bF..."</span>
+  }
+}</pre>
+      </div>
 
-      <p>Each primitive is a direct interface to a specific federal database. Below: the source, the domain, and a sample URL structure for agent use.</p>
+      <!-- ── SECTION 5: CROSS-DOMAIN INTELLIGENCE ── -->
 
-      <table class="source-table">
+      <div class="section-label">05 &mdash; Cross-Domain Intelligence</div>
+
+      <p>Combine domains in a single call. Get a safety profile for a location, or compare two items across any domain.</p>
+
+      <div class="code-block">
+        <div class="code-block-label">Safety report by ZIP -- water + hospitals + food recalls</div>
+        <pre>curl "https://api.openprimitive.com/v1/safety?zip=10001"</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-label">Location profile</div>
+        <pre>curl "https://api.openprimitive.com/v1/location?zip=90210"
+
+<span class="comment"># Returns: water quality, nearest hospitals, active food recalls,</span>
+<span class="comment"># all in one envelope with per-domain confidence scores</span></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-label">Drug comparison</div>
+        <pre>curl "https://api.openprimitive.com/v1/compare?type=drugs&amp;a=ibuprofen&amp;b=acetaminophen"
+
+<span class="comment"># Side-by-side: total events, serious events, deaths,</span>
+<span class="comment"># top reactions, confidence scores for both</span></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-label">Hospital comparison</div>
+        <pre>curl "https://api.openprimitive.com/v1/compare?type=hospitals&amp;a=mayo+clinic&amp;b=cleveland+clinic"</pre>
+      </div>
+
+      <!-- ── SECTION 6: IMPLEMENT THE PROTOCOL ── -->
+
+      <div class="section-label">06 &mdash; Implement the Protocol</div>
+
+      <p>Any data provider can adopt OPP. Three steps: publish a manifest, wrap your responses in the envelope, sign them.</p>
+
+      <p><strong>1. Publish a manifest at <code>/.well-known/opp.json</code></strong></p>
+
+      <div class="code-block">
+        <div class="code-block-label">/.well-known/opp.json</div>
+        <pre>{
+  <span class="key">"opp_version"</span>: <span class="str">"1.0"</span>,
+  <span class="key">"provider"</span>: <span class="str">"your-org-name"</span>,
+  <span class="key">"domains"</span>: [<span class="str">"environment"</span>, <span class="str">"housing"</span>],
+  <span class="key">"endpoints"</span>: {
+    <span class="key">"base_url"</span>: <span class="str">"https://api.your-domain.com/v1"</span>,
+    <span class="key">"ask"</span>: <span class="str">"/ask"</span>,
+    <span class="key">"domains"</span>: {
+      <span class="key">"environment"</span>: <span class="str">"/environment"</span>,
+      <span class="key">"housing"</span>: <span class="str">"/housing"</span>
+    }
+  },
+  <span class="key">"verification"</span>: {
+    <span class="key">"method"</span>: <span class="str">"Ed25519"</span>,
+    <span class="key">"publicKeys"</span>: [
+      {
+        <span class="key">"id"</span>: <span class="str">"#key-1"</span>,
+        <span class="key">"type"</span>: <span class="str">"Ed25519VerificationKey2020"</span>,
+        <span class="key">"publicKeyMultibase"</span>: <span class="str">"z6Mkf5rGMoatrSj1f..."</span>
+      }
+    ]
+  },
+  <span class="key">"confidence_model"</span>: {
+    <span class="key">"scale"</span>: <span class="str">"0-1"</span>,
+    <span class="key">"methodology_types"</span>: [
+      <span class="str">"regulatory-reporting"</span>,
+      <span class="str">"voluntary-reporting"</span>,
+      <span class="str">"census"</span>,
+      <span class="str">"sample-survey"</span>
+    ]
+  }
+}</pre>
+      </div>
+
+      <p><strong>2. Return the OPP envelope on every response.</strong> Include domain, source, source_url, freshness, data, confidence, citations, and proof.</p>
+
+      <p><strong>3. Sign your responses.</strong> Use Ed25519 (EdDSA) over JCS-canonicalized JSON. Consumers verify against the public key in your manifest.</p>
+
+      <table class="field-table">
         <thead>
           <tr>
-            <th>Primitive</th>
-            <th>Federal source</th>
-            <th>Domain</th>
-            <th>Example query URL</th>
+            <th>Manifest Field</th>
+            <th>Required</th>
+            <th>Purpose</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Flying</td>
-            <td class="source-agency">DOT · BTS Form 41</td>
-            <td>On-time rate, delays, cancellations by carrier</td>
-            <td class="source-url">flights.openprimitive.com</td>
-          </tr>
-          <tr>
-            <td>Cars</td>
-            <td class="source-agency">NHTSA 5-Star + Complaints</td>
-            <td>Crash scores, open recalls, owner complaints by vehicle</td>
-            <td class="source-url">cars.openprimitive.com</td>
-          </tr>
-          <tr>
-            <td>Health</td>
-            <td class="source-agency">PubMed / MEDLINE · NLM</td>
-            <td>Study volume for any health claim, 35M+ citations</td>
-            <td class="source-url">health.openprimitive.com</td>
-          </tr>
-          <tr>
-            <td>Hospitals</td>
-            <td class="source-agency">CMS Care Compare</td>
-            <td>Mortality rate, readmission rate, patient outcomes</td>
-            <td class="source-url">hospitals.openprimitive.com</td>
-          </tr>
-          <tr>
-            <td>Water</td>
-            <td class="source-agency">EPA SDWIS</td>
-            <td>Contaminant violations, health-based infractions by ZIP</td>
-            <td class="source-url">water.openprimitive.com</td>
-          </tr>
-          <tr>
-            <td>Drugs</td>
-            <td class="source-agency">FDA FAERS</td>
-            <td>Adverse event reports, serious events, deaths by drug</td>
-            <td class="source-url">drugs.openprimitive.com</td>
-          </tr>
-          <tr>
-            <td>Food</td>
-            <td class="source-agency">FDA Enforcement Reports</td>
-            <td>Active recalls by severity classification</td>
-            <td class="source-url">recalls.openprimitive.com</td>
-          </tr>
+          <tr><td>opp_version</td><td>Yes</td><td>Protocol version for compatibility</td></tr>
+          <tr><td>provider</td><td>Yes</td><td>Your organization identifier</td></tr>
+          <tr><td>domains</td><td>Yes</td><td>Array of data domains you serve</td></tr>
+          <tr><td>endpoints</td><td>Yes</td><td>Base URL and per-domain paths</td></tr>
+          <tr><td>verification</td><td>Yes</td><td>Public keys for proof verification</td></tr>
+          <tr><td>confidence_model</td><td>Yes</td><td>Scale and methodology types you use</td></tr>
         </tbody>
       </table>
 
       <div class="op-notice-dim">
-        These URLs are human interfaces. If you need raw JSON for automated pipelines, the federal source APIs are linked within each primitive. A lightweight JSON layer for programmatic access is on the roadmap.
+        OPP is open. No registration required. Publish the manifest, sign the responses, and agents that speak the protocol will find you. The full specification is at <a href="https://openprimitive.com/protocol" style="color:var(--accent);text-decoration:none;">openprimitive.com/protocol</a>.
       </div>
 
-    </div>
-
-    <div class="agents-cta">
-      <div class="op-eyebrow">Build with ground truth</div>
-      <h2>You've built an AI.<br><span>Make sure it knows what's actually true.</span></h2>
-      <p>Open Primitive is free, independent, and has no commercial incentive other than the record being readable. Point your agent here. Cite the source. Tell us what you build.</p>
-      <div class="agents-links">
-        <a href="https://api.openprimitive.com">API documentation →</a>
-        <a href="/">View the primitives →</a>
-        <a href="/manifesto.html">Read the manifesto →</a>
-        <a href="mailto:david@openprimitive.com">Get in touch →</a>
-      </div>
     </div>
 
     <footer class="agents-footer">

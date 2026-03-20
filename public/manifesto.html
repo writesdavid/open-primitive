@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Why This Exists — Open Primitive</title>
-  <meta name="description" content="A case for decision-oriented interfaces to US federal primary-source data. On search, AI, and what gets lost in translation." />
+  <title>Why the agent internet needs a data layer — Open Primitive</title>
+  <meta name="description" content="The founding document of the Open Primitive Protocol. How data providers make their data agent-consumable, verifiable, and discoverable." />
   <link rel="stylesheet" href="/primitive.css" />
   <style>
     .manifesto-page {
@@ -14,6 +14,9 @@
     }
 
     .manifesto-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: var(--space-8) 0;
       border-bottom: 1px solid var(--border);
       margin-bottom: var(--space-16);
@@ -39,10 +42,9 @@
       font-size: 19px;
       color: var(--muted);
       line-height: 1.6;
-      max-width: 540px;
+      max-width: 580px;
     }
 
-    /* Section headers */
     .body-text h2 {
       font-family: var(--font-mono);
       font-size: 12px;
@@ -88,7 +90,6 @@
       margin-bottom: 0;
     }
 
-    /* Pull quote */
     .pull {
       border-left: 3px solid var(--accent);
       padding: var(--space-2) 0 var(--space-2) var(--space-6);
@@ -105,7 +106,33 @@
       margin-bottom: 0 !important;
     }
 
-    /* Data table */
+    .gap-list {
+      margin: var(--space-6) 0 var(--space-8);
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .gap-list li {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.6;
+      padding-left: var(--space-5);
+      position: relative;
+    }
+
+    .gap-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 6px;
+      height: 1px;
+      background: var(--accent);
+    }
+
     .data-table {
       width: 100%;
       border-collapse: collapse;
@@ -143,53 +170,29 @@
       padding-right: var(--space-6);
     }
 
-    .data-table td:last-child {
+    .protocol-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: var(--space-6);
+      margin: var(--space-6) 0;
+    }
+
+    .protocol-block h3 {
       font-family: var(--font-mono);
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    /* Superscripts */
-    sup {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--accent);
-    }
-
-    /* References */
-    .references {
-      margin-top: var(--space-16);
-      padding-top: var(--space-8);
-      border-top: 1px solid var(--border);
-    }
-
-    .references ol {
-      padding-left: var(--space-5);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-3);
-    }
-
-    .references li {
       font-size: 13px;
-      font-family: var(--font-mono);
-      color: var(--dim);
-      line-height: 1.6;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-3);
     }
 
-    .references li em {
-      font-style: italic;
+    .protocol-block p {
+      font-size: 15px !important;
       color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 0 !important;
     }
 
-    /* Nav */
-    .manifesto-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    /* Primitives CTA */
     .manifesto-cta {
       margin-top: var(--space-12);
       margin-bottom: var(--space-10);
@@ -224,7 +227,6 @@
       color: var(--accent-warm);
     }
 
-    /* Footer */
     .manifesto-footer {
       padding: var(--space-8) 0 0;
       border-top: 1px solid var(--border);
@@ -257,7 +259,6 @@
       .pull p { font-size: 19px !important; }
       .data-table { font-size: 13px; }
       .data-table td:first-child { white-space: normal; }
-      .data-table td:last-child { white-space: normal; }
     }
   </style>
 </head>
@@ -272,115 +273,81 @@
     </nav>
 
     <header class="manifesto-header">
-      <div class="op-eyebrow">Why this exists</div>
-      <h1>On search, AI, and what gets lost when someone else summarizes the record for you.</h1>
+      <div class="op-eyebrow">Founding document</div>
+      <h1>Why the agent internet needs a data layer.</h1>
+      <p class="manifesto-subtitle">The Open Primitive Protocol defines how data providers make their data agent-consumable, verifiable, and discoverable.</p>
     </header>
 
     <div class="body-text">
 
+      <h2>The shift</h2>
+
+      <p>The internet was built for humans. HTML pages. Visual design. Attention economics. Advertising. That internet peaked.</p>
+
+      <p>Bot traffic exceeds human traffic by 2027. Automated agents already outnumber human visitors on most federal data endpoints. The next internet does not render pages. It consumes structured data, verifies provenance, and makes decisions without a browser.</p>
+
+      <p>This shift changes everything about how data must be published. A human can glance at a government website and judge whether it looks trustworthy. An agent cannot. A human can read a disclaimer at the bottom of a page. An agent needs that disclaimer encoded in the response header. A human can notice that data feels stale. An agent needs a timestamp it can compare against a freshness policy.</p>
+
+      <div class="pull">
+        <p>The internet built for humans assumed trust through visual design. The internet built for agents requires trust through structure.</p>
+      </div>
+
+      <p>The infrastructure that powered the first internet -- DNS, HTTP, TLS, HTML -- was designed to move documents between servers and browsers. The infrastructure for the agent internet does not exist yet. Agents need structured data with machine-readable provenance, freshness guarantees, and confidence scores. They need to verify what they receive. They need to discover what exists. No protocol provides this today.</p>
+
       <h2>The problem</h2>
 
-      <p>The most consequential information about your daily life is public. The government records it, indexes it, and publishes it. The DOT files every flight delay with tail number, cause code, and minute-level precision. NHTSA maintains crash test data for every vehicle sold in the United States, plus a database of every active recall and every fatality investigation. The National Library of Medicine indexes every peer-reviewed study published in the English language. CMS publishes patient outcome scores for every hospital in the country.</p>
+      <p>Agents get data naked.</p>
 
-      <p>Almost no one reads it. Not because it's hidden. Because it's not readable.</p>
+      <p>When Claude answers "is my water safe?" it either hallucinate or calls an API that returns a JSON blob with no provenance, no freshness guarantee, no confidence score. The agent cannot verify the data. The user cannot verify the agent. Trust breaks at every link in the chain.</p>
 
-      <p>A flight delay report is a 47-column CSV. A crash test filing is a structured XML document. A clinical trial abstract assumes you understand what a hazard ratio is. The record exists. The interface to the record has never been built for a person making a decision.</p>
+      <p>Ask an agent about hospital quality. It will synthesize text it was trained on -- text that described summaries of CMS data, filtered through health media optimized for engagement, written by journalists who never read the HCAHPS methodology. The agent sounds confident. The answer has no verifiable connection to the 4,000+ hospital quality scores CMS publishes quarterly.</p>
 
-      <p>Two industries promised to fix this. Neither did.</p>
+      <p>Ask an agent about drug interactions. It will produce a fluent paragraph. It will not tell you where that paragraph came from, when the underlying data was last updated, or what its confidence level is. You cannot check its work. Neither can the next agent in the chain.</p>
 
-      <h2>What search did</h2>
+      <p>This is not an AI problem. AI works fine when it has good data. This is a data infrastructure problem. The plumbing between primary sources and the agents that consume them does not exist.</p>
 
-      <p>In 1998, Brin and Page published "The Anatomy of a Large-Scale Hypertextual Web Search Engine," introducing PageRank — the insight that a link from one document to another was an implicit citation, and that a document cited by many authoritative sources was likely authoritative itself.<sup>1</sup> The algorithm was elegant. The mission was genuine: organize the world's information and make it universally accessible.</p>
+      <h2>The gap</h2>
 
-      <p>Then they discovered advertising.</p>
+      <p>Six structural failures prevent agents from consuming data reliably.</p>
 
-      <p>The search index that exists today is not optimized for accuracy. It is optimized for engagement, which correlates with accuracy only loosely and degrades over time as publishers learn to optimize for the index instead of the reader. A search for "is vitamin D effective" returns manufacturer pages, supplement retailers, health media that depends on supplement advertising, and a small number of actual studies buried behind pagination. The signal and the noise are presented with identical authority.</p>
+      <ul class="gap-list">
+        <li><strong>No standard envelope for data provenance.</strong> An agent receives a JSON response. Nothing in that response identifies the original source, the collection method, or the chain of custody from publisher to consumer.</li>
+        <li><strong>No freshness guarantees agents can inspect.</strong> Federal APIs serve data with no machine-readable indication of when it was collected, when it was last validated, or when it expires. An agent cannot distinguish data from yesterday and data from 2019.</li>
+        <li><strong>No cross-domain intelligence.</strong> FDA food recall data, EPA water quality data, and CMS hospital outcome data sit in separate silos. No agent can join them. A contaminated water supply that correlates with elevated hospital admissions in the same county is invisible.</li>
+        <li><strong>No historical archive.</strong> Federal APIs serve only current data. Last month's water quality readings, last quarter's hospital scores, last year's drug adverse events -- gone. Agents cannot analyze trends because the time-series data does not persist anywhere they can reach.</li>
+        <li><strong>No conflict resolution.</strong> When two federal sources report different values for the same measurement, no protocol exists for an agent to detect the conflict, compare confidence levels, or choose between them.</li>
+        <li><strong>No data quality scoring.</strong> An agent receives a response. It has no way to assess whether the response is complete, whether fields are missing, or whether the source has a history of revisions that changed previously published values.</li>
+      </ul>
 
-      <div class="pull">
-        <p>Search doesn't show you what is true. It shows you what has been linked to. Those are not the same thing.</p>
+      <p>Each of these gaps exists because federal data infrastructure was designed for human researchers navigating websites. That design assumption is now wrong. Agents are the primary consumers, and they are consuming data blind.</p>
+
+      <h2>What we built</h2>
+
+      <p>The Open Primitive Protocol defines how data providers make their data agent-consumable, verifiable, and discoverable. Three components.</p>
+
+      <div class="protocol-block">
+        <h3>Manifest</h3>
+        <p>A machine-readable declaration of what data a provider publishes, how often it updates, what domains it covers, and what confidence levels it assigns. Agents discover available data by reading manifests. One manifest per provider. Standardized schema.</p>
       </div>
 
-      <p>The deeper problem is structural. Search returns documents. The federal record is not a document — it is a database, a filing system, an XML feed. It does not have inbound links. It does not rank. The DOT's on-time performance data is not findable through search in any useful sense. You can find articles about it. You cannot find it.</p>
-
-      <h2>What AI did</h2>
-
-      <p>AI is a useful tool. Large language models synthesize vast amounts of text, explain complex topics, and cut the time it takes to get oriented on an unfamiliar subject. These are real capabilities.</p>
-
-      <p>The problem is that it's right often enough that people have stopped checking the primary source. Fewer people are reading primary records than they were ten years ago. More are outsourcing judgment — not just information retrieval, but the act of deciding what something means — to an interface trained to sound confident.</p>
-
-      <p>Large language models trained on human feedback — RLHF, as described by Ouyang et al. in 2022<sup>2</sup> — are optimized to generate responses that humans rate as helpful and authoritative. In practice, humans rate confident answers higher than uncertain ones, even when the uncertainty is warranted. The training signal rewards fluency and completion, not citation.</p>
-
-      <p>The result is a system that presents conclusions without showing its work. Ask an AI whether creatine supplementation improves athletic performance. It will tell you yes, with some qualifications. It will not show you the 53,000 studies in PubMed, the meta-analyses that found effect sizes ranging from negligible to significant depending on the population, the three large RCTs that contradict the headline finding, or the funding sources of the most-cited papers.</p>
-
-      <p>It cannot show you these things. It has no access to the primary record. It was trained on text that described the primary record, filtered through the same engagement-optimized search index described above, then further filtered by the preferences of human raters who had no more access to the original data than you do.</p>
-
-      <div class="pull">
-        <p>An AI translation isn't neutral. Something in the original doesn't survive the trip.</p>
+      <div class="protocol-block">
+        <h3>Envelope</h3>
+        <p>Every data response ships inside an envelope that includes: source attribution, collection timestamp, freshness expiry, confidence score, data quality grade, and a cryptographic signature tying the response to the publisher. Agents verify data by inspecting the envelope. The payload is untouched -- the envelope wraps it.</p>
       </div>
 
-      <p>RLHF-trained language models are extraordinarily good at synthesizing text into fluent, structured summaries. That capability fits many tasks. It breaks down when fidelity to the primary source is required, because synthesis involves loss — and because the habit of outsourcing judgment is easier to build than it is to break.</p>
+      <div class="protocol-block">
+        <h3>Endpoint</h3>
+        <p>A standardized query interface that agents use to request data across domains. Consistent parameter naming. Consistent error handling. Consistent pagination. An agent that knows how to query one Open Primitive endpoint knows how to query all of them.</p>
+      </div>
 
-      <h2>The translational gap</h2>
-
-      <p>Consider the specific case of a family deciding whether to purchase a vehicle. The available data is substantial. NHTSA's 5-Star Safety Ratings program generates frontal crash, side crash, and rollover scores for every rated vehicle, expressed as a star rating derived from physical tests with instrumented dummies.<sup>3</sup> The agency also maintains a database of every Technical Service Bulletin and Recall Campaign, searchable by make, model, and year. Complaints from owners — more than 10,000 filed monthly — are publicly accessible and full-text searchable.</p>
-
-      <p>The typical consumer interaction with this data is to ask a salesperson, read a magazine review, or — increasingly — ask an AI assistant. None of these channels surfaces the primary record. The salesperson has an incentive. The review is written by a journalist who did not read the crash test methodology. The AI summarizes text that described summaries of the original data.</p>
-
-      <p>At each step in that chain, something is lost. The specific star ratings. The raw injury probability scores underlying the stars. The open recall status. The pattern of complaints that appears in the database before a recall is issued.</p>
-
-      <p>The data that would change the decision is available. The interface that would surface it has never been built.</p>
-
-      <h2>The sources</h2>
+      <p>The reference implementation covers 16 US federal data domains across 11 agencies, live at api.openprimitive.com. Flight delays from BTS. Vehicle safety from NHTSA. Hospital quality from CMS. Water quality from EPA. Drug adverse events from FDA. Food recalls from FDA. Health evidence from NLM. Each domain follows the same protocol. Each response carries the same envelope.</p>
 
       <table class="data-table">
         <thead>
           <tr>
-            <th>Source</th>
-            <th>What it contains</th>
-            <th>Update frequency</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>BTS Form 41 / ATADS</td>
-            <td>Flight-level on-time, cancellation, and cause data for all US carriers. Reported monthly. Publicly available via the DOT Bureau of Transportation Statistics.</td>
-            <td>Monthly</td>
-          </tr>
-          <tr>
-            <td>FAA NASSTATUS</td>
-            <td>Real-time National Airspace System status: ground stops, ground delay programs, and arrival/departure delays at every airport in the US, updated continuously.</td>
-            <td>Live</td>
-          </tr>
-          <tr>
-            <td>NHTSA 5-Star Ratings</td>
-            <td>Frontal, side, and rollover crash test scores for every tested vehicle. Expressed as stars derived from probability of serious injury in a standardized test.</td>
-            <td>Per model year</td>
-          </tr>
-          <tr>
-            <td>NHTSA Complaints &amp; Recalls</td>
-            <td>Every owner-submitted complaint and every active recall campaign, searchable by vehicle. Approximately 10,000 complaints filed per month.</td>
-            <td>Continuous</td>
-          </tr>
-          <tr>
-            <td>PubMed / MEDLINE</td>
-            <td>35+ million citations to peer-reviewed biomedical literature, indexed by the National Library of Medicine. Searchable by MeSH term, title, abstract, author, and publication type.</td>
-            <td>Daily</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h2>Why these seven</h2>
-
-      <p>The federal government records a great deal of data. Choosing seven interfaces required a selection principle. The principle was not what was easiest to access. It was what humans have always needed to know before making consequential decisions.</p>
-
-      <p>Before every significant move, every tribe has gathered intel. The oldest categories of human intelligence map to three questions: <em>Can I move safely? Is this safe to consume? Can I be healed?</em> Every significant personal risk in modern life falls into one of these three territories — and the federal record, by structural accident, covers them almost exactly.</p>
-
-      <table class="data-table" style="margin: var(--space-8) 0;">
-        <thead>
-          <tr>
             <th>Territory</th>
-            <th>The primal question</th>
-            <th>Primitives</th>
+            <th>The question</th>
+            <th>Domains</th>
           </tr>
         </thead>
         <tbody>
@@ -402,68 +369,59 @@
         </tbody>
       </table>
 
-      <p>The seven were chosen because these domains share three properties no other category of federal data has in combination: the stakes are high enough to change a decision, the gap between published record and public awareness is wide enough to matter, and the data is specific enough to actually answer the question.</p>
+      <h2>The moat</h2>
 
-      <p>The other criterion was independence. Airlines, pharmaceutical companies, and hospital systems all have the opposite commercial incentive from the one that built these tools. That is why the interfaces haven't existed until now.</p>
+      <p><strong>Archive compounds daily.</strong> Every response Open Primitive serves gets archived. Federal APIs serve only current data. We store the time series. After one year, we hold 365 snapshots no one else has. After five years, we hold the only queryable historical record of federal data as it was actually published. Time-series data cannot be reconstructed. This advantage grows every day and cannot be replicated retroactively.</p>
 
-      <h2>What Open Primitive does</h2>
+      <p><strong>Cryptographic provenance.</strong> Every envelope carries a signature chain from the original federal source through our collection and transformation pipeline to the agent that receives it. You can verify that a water quality reading came from EPA, was collected on a specific date, and arrived unmodified. Provenance chains cannot be faked after the fact.</p>
 
-      <p>Open Primitive connects directly to primary-source federal databases and renders their output in a form a person can read and act on. No summaries. No interpretation. The record, rendered.</p>
+      <p><strong>Cross-domain joins.</strong> No single federal agency connects its data to another agency's data. EPA does not link water quality to CMS hospital admissions. FDA does not link drug adverse events to NLM clinical trial outcomes. Open Primitive joins across domains because it holds normalized data from all of them. The cross-domain graph gets richer with every domain added.</p>
 
-      <p>The design constraint is strict: every number shown must be traceable to a specific filing, a specific database record, a specific row in a government dataset. If the underlying data is ambiguous, the interface shows the ambiguity. If the data is missing, it says so.</p>
+      <p><strong>Editorial judgment.</strong> Not all federal data benefits from AI translation. Some data -- crash test scores, flight delay percentages -- communicates clearly as numbers. Other data -- clinical trial abstracts, adverse event narratives -- requires synthesis to be useful. Open Primitive makes this judgment domain by domain. That editorial layer is a product decision, not an algorithm. It cannot be automated away.</p>
 
-      <p>The current tools surface three categories of federal data where the gap between the published record and public awareness is widest and the stakes of the decisions involved are highest: transportation safety, vehicle safety, and health evidence.</p>
+      <p><strong>The protocol itself.</strong> The first credible standard for agent-consumable data shapes the ecosystem. Providers adopt it because agents expect it. Agents expect it because providers adopted it. Network effects in protocol design compound faster than in any other category.</p>
 
-      <p>More will follow. Hospital quality scores from CMS HCAHPS. Water quality data from EPA ECHO. Drug interaction data from the FDA Adverse Event Reporting System. The pattern is the same in each case: the record exists, the interface doesn't, and the decisions people make without it are worse than they need to be.</p>
+      <h2>The endgame</h2>
 
-      <h2>The boundary</h2>
+      <p>Federated data layers, connected by one protocol.</p>
 
-      <p>Open Primitive shows you what the record says. The decision belongs to you.</p>
+      <p>US federal data through Open Primitive. EU regulatory data through a European equivalent running the same protocol. International health data through WHO. Global economic data through World Bank. Climate data through national meteorological agencies. Each provider publishes a manifest. Each response ships in an envelope. Each endpoint follows the same query interface.</p>
 
-      <p>A tool that tells you "Alaska Airlines is the safest choice" has made a judgment about how to weight on-time performance against cancellation rates against your specific route and departure time. That judgment belongs to you. A tool that shows you the DOT data, the FAA live status, and the BTS track record for each carrier gives you what you need to make it.</p>
+      <p>An agent in Berlin queries hospital infection rates in Texas and pharmaceutical approval timelines in Brussels in the same request. Both responses carry provenance chains. Both specify freshness windows. Both include confidence scores. The agent verifies both before acting.</p>
 
-      <p>The goal is access to the actual record, in a form you can read.</p>
+      <p>This is not a fantasy about interoperability. This is what happens when you define the protocol layer before the platform layer. HTTP did not require every website to use the same CMS. The Open Primitive Protocol does not require every data provider to use the same infrastructure. It requires them to speak the same language at the boundary.</p>
 
-      <h2>Open questions</h2>
+      <div class="pull">
+        <p>Google organized information for humans. Open Primitive organizes data for agents.</p>
+      </div>
 
-      <p>Several design problems remain unsolved. Federal databases are not designed for real-time consumer queries — rate limits, schema changes, and data gaps are operational realities, not edge cases. The line between "making data readable" and "making data interpretive" is not always clear; a composite score that ranks airlines involves weighting choices that embed assumptions. As more tools are added, the question of what counts as "primary source" becomes harder to answer cleanly.</p>
+      <p>The agent internet will be built on data infrastructure, not document infrastructure. Someone will define the protocol that connects data providers to data consumers in this new internet. The question is whether that protocol optimizes for verifiability or for convenience. Whether it preserves provenance or strips it. Whether it serves the agent's user or the agent's builder.</p>
 
-      <p>These problems are worth naming because they are not decorative. They are the reasons no one has built this before. The commercial incentive runs in the opposite direction: AI answers are cheaper to produce, easier to scale, and more satisfying to users in the short term than raw data interfaces. The correct answer to "is this car safe" is not a star rating. It is a 90-minute reading session. Most people will not do that. Open Primitive tries to make it possible in five minutes.</p>
+      <p>Open Primitive chose verifiability, provenance, and the user. The protocol is open. The reference implementation is live. The archive grows daily.</p>
 
-      <p>The goal is to make the primary record accessible enough that more people use it, more often, for the decisions where it matters most.</p>
+      <p>Build on it.</p>
 
-    </div>
-
-    <div class="references">
-      <div class="op-label">References</div>
-      <ol>
-        <li>Brin, S. &amp; Page, L. (1998). The anatomy of a large-scale hypertextual web search engine. <em>Computer Networks and ISDN Systems</em>, 30(1–7), 107–117.</li>
-        <li>Ouyang, L. et al. (2022). Training language models to follow instructions with human feedback. <em>arXiv</em> 2203.02155.</li>
-        <li>NHTSA (2024). New Car Assessment Program (NCAP) 5-Star Safety Ratings Methodology. US Department of Transportation.</li>
-        <li>Bureau of Transportation Statistics (2024). Airline On-Time Statistics and Delay Causes. Form 41 / ATADS. US Department of Transportation.</li>
-        <li>National Library of Medicine (2024). PubMed Overview. US National Institutes of Health.</li>
-      </ol>
     </div>
 
     <div class="op-divider"></div>
 
     <div class="manifesto-cta">
-      <div class="op-label">The primitives</div>
-      <p class="manifesto-cta-intro">The argument is only as good as the interfaces it produced. These are the seven.</p>
+      <div class="op-label">The reference implementation</div>
+      <p class="manifesto-cta-intro">The protocol is only as credible as the implementation that proves it works. These are the seven live domains.</p>
       <div class="manifesto-primitive-links">
-        <a href="https://flights.openprimitive.com" target="_blank">Flying →</a>
-        <a href="https://cars.openprimitive.com" target="_blank">Cars →</a>
-        <a href="https://health.openprimitive.com" target="_blank">Health →</a>
-        <a href="https://hospitals.openprimitive.com" target="_blank">Hospitals →</a>
-        <a href="https://water.openprimitive.com" target="_blank">Water →</a>
-        <a href="https://drugs.openprimitive.com" target="_blank">Drugs →</a>
-        <a href="https://recalls.openprimitive.com" target="_blank">Food →</a>
+        <a href="https://flights.openprimitive.com" target="_blank">Flying</a>
+        <a href="https://cars.openprimitive.com" target="_blank">Cars</a>
+        <a href="https://health.openprimitive.com" target="_blank">Health</a>
+        <a href="https://hospitals.openprimitive.com" target="_blank">Hospitals</a>
+        <a href="https://water.openprimitive.com" target="_blank">Water</a>
+        <a href="https://drugs.openprimitive.com" target="_blank">Drugs</a>
+        <a href="https://recalls.openprimitive.com" target="_blank">Food</a>
       </div>
     </div>
 
     <footer class="manifesto-footer">
       <span class="manifesto-footer-text"><a href="/">Open Primitive</a></span>
-      <span class="manifesto-footer-text">David Hamilton</span>
+      <span class="manifesto-footer-text">David Hamilton — March 2026</span>
     </footer>
 
   </div>

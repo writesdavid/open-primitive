@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<!-- Open Primitive -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Open Primitive — The public record, readable.</title>
-  <meta name="description" content="13 direct interfaces to US federal primary-source data. No AI. No summaries. The record, readable." />
-  <meta property="og:title" content="Open Primitive" />
-  <meta property="og:description" content="Public data, made readable." />
+  <title>Open Primitive Protocol — The data layer of the agent internet</title>
+  <meta name="description" content="A standard for how data providers make their data agent-consumable, verifiable, and discoverable. 16 federal data domains. One protocol." />
+  <meta property="og:title" content="Open Primitive Protocol" />
+  <meta property="og:description" content="The data layer of the agent internet." />
   <meta property="og:type" content="website" />
   <script type="application/ld+json">
   [
@@ -16,109 +15,150 @@
       "@type": "Organization",
       "name": "Open Primitive",
       "url": "https://openprimitive.com",
-      "description": "Federal data for humans and agents. 13 government data domains.",
+      "description": "The Open Primitive Protocol. A standard for agent-consumable, verifiable, discoverable data.",
       "founder": { "@type": "Person", "name": "David Hamilton" }
     },
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Open Primitive",
+      "name": "Open Primitive Protocol",
       "url": "https://openprimitive.com"
     }
   ]
   </script>
   <link rel="stylesheet" href="/primitive.css" />
   <style>
-    /* ── Streams ──────────────────────────────────── */
-
-    .territory {
+    .protocol-section {
       margin-bottom: var(--space-12);
     }
 
-    .streams {
+    .protocol-section h2 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-5);
+    }
+
+    .protocol-section p {
+      font-size: 17px;
+      color: var(--body);
+      line-height: 1.65;
+      margin-bottom: var(--space-4);
+    }
+
+    .component {
+      padding: var(--space-6) 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .component:first-child {
       border-top: 1px solid var(--border);
     }
 
-    .stream {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: var(--space-6);
-      padding: var(--space-6) 0;
-      border-bottom: 1px solid var(--border);
-      text-decoration: none;
-      color: inherit;
-      position: relative;
-    }
-
-    .stream::before {
-      content: '';
-      position: absolute;
-      left: -48px; right: -48px;
-      top: 0; bottom: 0;
-      background: var(--bg-hover);
-      opacity: 0;
-      transition: opacity 0.15s;
-      pointer-events: none;
-    }
-
-    .stream:hover::before { opacity: 1; }
-    .stream:hover .stream-name { color: var(--accent); }
-    .stream:hover .stream-arrow { color: var(--accent); transform: translateX(4px); }
-
-    .stream-content { flex: 1; min-width: 0; }
-
-    .stream-name {
+    .component-name {
       font-family: var(--font-display);
       font-size: 20px;
       font-weight: 600;
       color: var(--text);
-      letter-spacing: -0.01em;
-      line-height: 1.2;
       margin-bottom: var(--space-2);
-      transition: color 0.15s;
     }
 
-    .stream-desc {
+    .component-path {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: var(--space-3);
+    }
+
+    .component-desc {
       font-size: 16px;
       color: var(--muted);
       line-height: 1.55;
-      margin-bottom: var(--space-2);
     }
 
-    .stream-source {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--dim);
-      letter-spacing: 0.06em;
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: var(--space-3);
+      margin-top: var(--space-5);
     }
 
-    .stream-arrow {
-      font-size: 18px;
-      color: var(--dim);
-      transition: color 0.15s, transform 0.15s;
-      flex-shrink: 0;
-      padding-top: 2px;
-    }
-
-    /* Hero link */
-    .hero-why {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-2);
-      font-family: var(--font-body);
+    .domain-item {
       font-size: 15px;
+      color: var(--body);
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .domain-item span {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--dim);
+      margin-top: var(--space-1);
+      letter-spacing: 0.04em;
+    }
+
+    .agent-features {
+      border-top: 1px solid var(--border);
+    }
+
+    .agent-feature {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-4);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .agent-feature-name {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--accent);
+      white-space: nowrap;
+      min-width: 200px;
+    }
+
+    .agent-feature-desc {
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .vision-text {
+      font-family: var(--font-display);
+      font-size: 22px;
       font-weight: 500;
+      color: var(--text);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--space-5);
+      flex-wrap: wrap;
+      margin-top: var(--space-4);
+    }
+
+    .footer-links a {
+      font-size: 14px;
       color: var(--accent);
       text-decoration: none;
-      margin-top: var(--space-5);
-      transition: gap 0.2s, color 0.15s;
+      font-weight: 500;
     }
-    .hero-why:hover { gap: var(--space-3); color: var(--accent-warm); }
+
+    .footer-links a:hover {
+      color: var(--accent-warm);
+    }
 
     @media (max-width: 640px) {
-      .stream::before { left: -20px; right: -20px; }
-      .stream-name { font-size: 18px; }
+      .protocol-section h2 { font-size: 22px; }
+      .agent-feature { flex-direction: column; gap: var(--space-2); }
+      .agent-feature-name { min-width: 0; }
+      .vision-text { font-size: 19px; }
     }
   </style>
 </head>
@@ -130,139 +170,138 @@
       <a class="op-wordmark" href="/">Open Primitive</a>
       <div class="op-header-right">
         <span class="op-pulse"></span>
-        <span>13 primitives live</span>
-        <span class="op-header-sep">·</span>
+        <span>Protocol</span>
+        <span class="op-header-sep">&middot;</span>
+        <a href="https://api.openprimitive.com">API</a>
+        <span class="op-header-sep">&middot;</span>
         <a href="/for-agents.html">For agents</a>
-        <span class="op-header-sep">·</span>
+        <span class="op-header-sep">&middot;</span>
         <a href="/manifesto.html">Why</a>
       </div>
     </header>
 
     <section class="op-hero">
-      <h1>The public record,<br>readable.</h1>
-      <p style="margin-top: var(--space-6);">
-        13 interfaces to US federal primary-source data. No AI. No summaries.
-      </p>
-      <a class="hero-why" href="/manifesto.html">
-        Why this exists →
-      </a>
-    </section>
-
-    <section style="margin-bottom: var(--space-12); padding: var(--space-6) 0; border-bottom: 1px solid var(--border);">
-      <div class="op-label">The API</div>
-      <p style="font-size: 16px; color: var(--muted); line-height: 1.55; margin-top: var(--space-3);">
-        13 federal data domains. One unified
-        <a href="https://api.openprimitive.com" style="color: var(--accent); text-decoration: none; font-weight: 500;">API</a>.
-        MCP server. A2A agent card. Cross-domain safety scores.
-      </p>
-      <p style="font-family: var(--font-mono); font-size: 14px; color: var(--accent); margin-top: var(--space-4);">
-        <span id="agent-stat">—</span>% of our traffic is machines
+      <p style="font-family: var(--font-mono); font-size: 13px; color: var(--dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--space-4);">The data layer of the agent internet</p>
+      <h1>Open Primitive<br>Protocol</h1>
+      <p style="margin-top: var(--space-6); font-size: 18px; color: var(--body); line-height: 1.6; max-width: 640px;">
+        A standard for how data providers make their data agent-consumable, verifiable, and discoverable.
       </p>
     </section>
 
-    <script>
-      fetch('https://api.openprimitive.com/v1/stats')
-        .then(r => r.json())
-        .then(d => { if (d.agentPercent != null) document.getElementById('agent-stat').textContent = d.agentPercent; })
-        .catch(() => {});
-    </script>
+    <!-- THE PROBLEM -->
+    <section class="protocol-section">
+      <h2>The problem</h2>
+      <p>
+        Agents get data naked. No provenance. No freshness guarantee. No confidence score. No license metadata. Every response is a JSON blob with no way to know where it came from, how old it is, or whether to trust it.
+      </p>
+      <p>
+        The agent internet is missing its data envelope.
+      </p>
+    </section>
 
-    <!-- Move -->
-    <div class="territory">
-      <div class="op-label">Move</div>
-      <div class="streams">
+    <!-- THE PROTOCOL -->
+    <section class="protocol-section">
+      <h2>The protocol</h2>
+      <p>Three components. Each one solves a piece the agent internet does not have yet.</p>
 
-        <a class="stream" href="https://flights.openprimitive.com" target="_blank">
-          <div class="stream-content">
-            <div class="stream-name">Flying</div>
-            <div class="stream-desc">On-time performance across 8 US carriers, ranked by DOT filing.</div>
-            <div class="stream-source">AviationStack · 8 US carriers · live</div>
-          </div>
-          <span class="stream-arrow">→</span>
-        </a>
-
-        <a class="stream" href="https://cars.openprimitive.com" target="_blank">
-          <div class="stream-content">
-            <div class="stream-name">Cars</div>
-            <div class="stream-desc">NHTSA crash test scores, active recalls, and owner complaints by make, model, and year.</div>
-            <div class="stream-source">NHTSA · 50,000+ vehicles rated · continuous</div>
-          </div>
-          <span class="stream-arrow">→</span>
-        </a>
-
+      <div class="component">
+        <div class="component-name">Manifest</div>
+        <div class="component-path">/.well-known/opp.json</div>
+        <div class="component-desc">Providers declare what data they serve, how fresh it is, and how to verify it. One file. Any domain. Agents discover capabilities before they make a single request.</div>
       </div>
-    </div>
 
-    <!-- Sustain -->
-    <div class="territory">
-      <div class="op-label">Sustain</div>
-      <div class="streams">
-
-        <a class="stream" href="https://recalls.openprimitive.com" target="_blank">
-          <div class="stream-content">
-            <div class="stream-name">Food</div>
-            <div class="stream-desc">Active FDA food recalls classified by severity, updated continuously.</div>
-            <div class="stream-source">FDA Enforcement · continuous updates</div>
-          </div>
-          <span class="stream-arrow">→</span>
-        </a>
-
-        <a class="stream" href="https://water.openprimitive.com" target="_blank">
-          <div class="stream-content">
-            <div class="stream-name">Water</div>
-            <div class="stream-desc">Contaminant violations at every public water system, searchable by ZIP code.</div>
-            <div class="stream-source">EPA SDWIS · 50,000+ systems · updated quarterly</div>
-          </div>
-          <span class="stream-arrow">→</span>
-        </a>
-
+      <div class="component">
+        <div class="component-name">Response envelope</div>
+        <div class="component-path">Every response, every time</div>
+        <div class="component-desc">Provenance, confidence score, citation chain, and an Ed25519 signature. The data carries its own trust. No external lookup required.</div>
       </div>
-    </div>
 
-    <!-- Heal -->
-    <div class="territory">
-      <div class="op-label">Heal</div>
-      <div class="streams">
-
-        <a class="stream" href="https://health.openprimitive.com" target="_blank">
-          <div class="stream-content">
-            <div class="stream-name">Health</div>
-            <div class="stream-desc">Study volume for any health claim from 35 million PubMed citations.</div>
-            <div class="stream-source">PubMed / MEDLINE · 35M+ citations · updated daily</div>
-          </div>
-          <span class="stream-arrow">→</span>
-        </a>
-
-        <a class="stream" href="https://hospitals.openprimitive.com" target="_blank">
-          <div class="stream-content">
-            <div class="stream-name">Hospitals</div>
-            <div class="stream-desc">Mortality rates, readmission rates, and patient experience scores for every Medicare hospital.</div>
-            <div class="stream-source">CMS Care Compare · 6,000+ hospitals · updated monthly</div>
-          </div>
-          <span class="stream-arrow">→</span>
-        </a>
-
-        <a class="stream" href="https://drugs.openprimitive.com" target="_blank">
-          <div class="stream-content">
-            <div class="stream-name">Drugs</div>
-            <div class="stream-desc">Serious events, deaths, and top reactions reported to FDA FAERS for any drug.</div>
-            <div class="stream-source">FDA FAERS · 15M+ reports · updated quarterly</div>
-          </div>
-          <span class="stream-arrow">→</span>
-        </a>
-
+      <div class="component">
+        <div class="component-name">Query endpoint</div>
+        <div class="component-path">/v1/query</div>
+        <div class="component-desc">One standardized interface any agent can call. Structured parameters in, enveloped data out. No bespoke integration per provider.</div>
       </div>
-    </div>
+    </section>
 
-    <section style="text-align: center; padding: var(--space-8) var(--space-4);">
-      <p style="color: var(--muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--space-2);">Built by</p>
-      <p style="color: var(--text); font-family: var(--font-display); font-size: 1.1rem;">David Hamilton</p>
-      <p style="color: var(--body); font-size: 0.9rem;">Content engineering and AI infrastructure at Block.</p>
+    <!-- REFERENCE IMPLEMENTATION -->
+    <section class="protocol-section">
+      <h2>Reference implementation</h2>
+      <p>
+        We built it first. 16 federal data domains across 11 US agencies. The API at <a href="https://api.openprimitive.com" style="color: var(--accent); text-decoration: none; font-weight: 500;">api.openprimitive.com</a> is the reference implementation of OPP.
+      </p>
+
+      <div class="domain-grid">
+        <div class="domain-item">Flights<span>BTS / FAA</span></div>
+        <div class="domain-item">Cars<span>NHTSA</span></div>
+        <div class="domain-item">Food recalls<span>FDA</span></div>
+        <div class="domain-item">Water safety<span>EPA SDWIS</span></div>
+        <div class="domain-item">Health claims<span>PubMed</span></div>
+        <div class="domain-item">Hospitals<span>CMS</span></div>
+        <div class="domain-item">Drug effects<span>FDA FAERS</span></div>
+        <div class="domain-item">Nursing homes<span>CMS</span></div>
+        <div class="domain-item">Clinical trials<span>ClinicalTrials.gov</span></div>
+        <div class="domain-item">Air quality<span>EPA AQS</span></div>
+        <div class="domain-item">Consumer complaints<span>CFPB</span></div>
+        <div class="domain-item">Bank failures<span>FDIC</span></div>
+        <div class="domain-item">Product recalls<span>CPSC</span></div>
+        <div class="domain-item">Workplace safety<span>OSHA</span></div>
+        <div class="domain-item">Drug labels<span>FDA DailyMed</span></div>
+        <div class="domain-item">Food inspections<span>USDA FSIS</span></div>
+      </div>
+    </section>
+
+    <!-- FOR AGENTS -->
+    <section class="protocol-section">
+      <h2>For agents</h2>
+      <p>Every integration path an agent needs. Pick one or use all of them.</p>
+
+      <div class="agent-features">
+        <div class="agent-feature">
+          <div class="agent-feature-name">MCP server</div>
+          <div class="agent-feature-desc">13 tools. Drop into Claude, Cursor, or any MCP-compatible client.</div>
+        </div>
+        <div class="agent-feature">
+          <div class="agent-feature-name">A2A agent card</div>
+          <div class="agent-feature-desc">13 skills. Google A2A protocol for agent-to-agent discovery.</div>
+        </div>
+        <div class="agent-feature">
+          <div class="agent-feature-name">llms.txt + llms-full.txt</div>
+          <div class="agent-feature-desc">LLM-readable documentation at the root. Full API spec included.</div>
+        </div>
+        <div class="agent-feature">
+          <div class="agent-feature-name">/v1/ask</div>
+          <div class="agent-feature-desc">Natural language routing. Ask a question, get the right domain and data back.</div>
+        </div>
+        <div class="agent-feature">
+          <div class="agent-feature-name">Citation-ready responses</div>
+          <div class="agent-feature-desc">Every response includes source URL, agency name, and retrieval timestamp.</div>
+        </div>
+        <div class="agent-feature">
+          <div class="agent-feature-name">Reasoning hints</div>
+          <div class="agent-feature-desc">Every response carries context an LLM can use to explain the data.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE VISION -->
+    <section class="protocol-section" style="margin-bottom: var(--space-8);">
+      <h2>The vision</h2>
+      <p class="vision-text">
+        Google organized information for humans. Open Primitive organizes data for agents.
+      </p>
+      <p>
+        The protocol is open. Any data provider can implement it. Federal, state, international, commercial. One envelope. One discovery mechanism. One trust chain.
+      </p>
     </section>
 
     <footer class="op-footer">
-      <span class="op-footer-text">Open Primitive · David Hamilton</span>
-      <span class="op-footer-text">openprimitive.com</span>
+      <span class="op-footer-text">Open Primitive Protocol &middot; David Hamilton</span>
+      <div class="footer-links">
+        <a href="https://api.openprimitive.com">api.openprimitive.com</a>
+        <a href="/for-agents.html">For agents</a>
+        <a href="/manifesto.html">Manifesto</a>
+        <a href="https://github.com/writesdavid">GitHub</a>
+      </div>
     </footer>
 
   </div>

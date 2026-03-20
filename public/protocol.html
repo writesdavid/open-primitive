@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Primitive Protocol — Specification v0.1.0</title>
+  <link rel="stylesheet" href="/primitive.css">
+  <style>
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--body);
+      margin: 0;
+      padding: 0;
+      line-height: 1.7;
+    }
+
+    .spec {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      color: var(--text);
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: var(--space-2);
+      line-height: 1.2;
+    }
+
+    .version-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      padding: 2px 8px;
+      margin-bottom: var(--space-8);
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      color: var(--text);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-top: var(--space-10, 48px);
+      margin-bottom: var(--space-4);
+      padding-bottom: var(--space-2);
+      border-bottom: 2px solid var(--border);
+    }
+
+    h2 .section-num {
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-weight: 400;
+      margin-right: 8px;
+    }
+
+    p {
+      margin: 0 0 var(--space-4) 0;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+      background: var(--accent-bg);
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--text);
+    }
+
+    pre {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: var(--space-5);
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--text);
+      margin: var(--space-4) 0 var(--space-6) 0;
+    }
+
+    .field-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--space-4) 0 var(--space-6) 0;
+    }
+
+    .field-table th {
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: var(--space-2) var(--space-3);
+      border-bottom: 2px solid var(--border-strong);
+    }
+
+    .field-table td {
+      padding: var(--space-3);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      font-size: 0.92rem;
+    }
+
+    .field-table td:first-child {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      white-space: nowrap;
+      width: 200px;
+    }
+
+    .field-table td .required {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      color: var(--danger);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-left: 6px;
+    }
+
+    .field-table td .type {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    ol.steps {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+      margin: var(--space-4) 0;
+    }
+
+    ol.steps li {
+      counter-increment: step;
+      padding: var(--space-3) 0 var(--space-3) var(--space-8, 40px);
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+
+    ol.steps li:last-child {
+      border-bottom: none;
+    }
+
+    ol.steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: var(--space-3);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 700;
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .discovery-item {
+      padding: var(--space-4);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: var(--space-3);
+    }
+
+    .discovery-item strong {
+      font-family: var(--font-mono);
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    .discovery-item p {
+      margin: var(--space-2) 0 0 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: var(--space-6);
+      font-size: 0.88rem;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: var(--accent);
+    }
+
+    @media (max-width: 600px) {
+      .spec {
+        padding: var(--space-6) var(--space-4);
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      .field-table td:first-child {
+        width: auto;
+      }
+
+      pre {
+        font-size: 0.75rem;
+        padding: var(--space-4);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="spec">
+    <a href="/" class="back-link">Open Primitive</a>
+
+    <h1>Open Primitive Protocol</h1>
+    <span class="version-tag">v0.1.0</span>
+
+    <!-- 1. OVERVIEW -->
+    <h2><span class="section-num">1</span> Overview</h2>
+    <p>OPP defines how data providers make their data agent-consumable, verifiable, and discoverable. Three components: manifest, envelope, endpoint.</p>
+
+    <!-- 2. MANIFEST -->
+    <h2><span class="section-num">2</span> Manifest</h2>
+    <p>Every OPP provider publishes a manifest at <code>/.well-known/opp.json</code></p>
+
+    <table class="field-table">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>@context <span class="required">required</span></td>
+          <td>Protocol namespace URL. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Human-readable name of this provider. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>description</td>
+          <td>What this provider offers. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>version</td>
+          <td>Provider version. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>protocolVersion</td>
+          <td>OPP version this manifest conforms to. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>provider.name</td>
+          <td>Organization or person operating this provider. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>provider.url</td>
+          <td>Provider homepage. <span class="type">string (URL)</span></td>
+        </tr>
+        <tr>
+          <td>provider.contact</td>
+          <td>Contact email or URL. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>provider.publicKey</td>
+          <td>Ed25519 public key for response verification. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>domains[]</td>
+          <td>Array of data domains this provider serves.</td>
+        </tr>
+        <tr>
+          <td>domains[].id</td>
+          <td>Machine-readable domain identifier. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>domains[].name</td>
+          <td>Human-readable domain name. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>domains[].source</td>
+          <td>Upstream data source URL. <span class="type">string (URL)</span></td>
+        </tr>
+        <tr>
+          <td>domains[].entityTypes[]</td>
+          <td>Types of entities queryable in this domain. <span class="type">string[]</span></td>
+        </tr>
+        <tr>
+          <td>domains[].freshness</td>
+          <td>How often data is refreshed. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>domains[].license</td>
+          <td>License governing this data. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>endpoints.base</td>
+          <td>Base URL for all API endpoints. <span class="type">string (URL)</span></td>
+        </tr>
+        <tr>
+          <td>endpoints.query</td>
+          <td>Query endpoint path template. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>discovery.openapi</td>
+          <td>Path to OpenAPI spec. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>discovery.llms</td>
+          <td>Path to LLM-readable description. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>discovery.mcpServer</td>
+          <td>MCP server endpoint. <span class="type">string (URL)</span></td>
+        </tr>
+        <tr>
+          <td>discovery.agentCard</td>
+          <td>A2A agent card endpoint. <span class="type">string (URL)</span></td>
+        </tr>
+        <tr>
+          <td>geographic.scope</td>
+          <td>Geographic coverage. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>geographic.granularity</td>
+          <td>Finest geographic resolution. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>authentication.type</td>
+          <td>Auth type: <code>none</code>, <code>apiKey</code>, <code>bearer</code>. <span class="type">string</span></td>
+        </tr>
+        <tr>
+          <td>authentication.header</td>
+          <td>Header name for auth token. <span class="type">string</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 3. RESPONSE ENVELOPE -->
+    <h2><span class="section-num">3</span> Response Envelope</h2>
+    <p>Every OPP response wraps data in a standard envelope.</p>
+
+    <pre>{
+  "domain": "string — which dataset",
+  "source": "string — the data provider",
+  "source_url": "string — upstream source URL",
+  "freshness": "ISO 8601 — when data was last pulled",
+  "data": "object — domain-specific payload",
+  "confidence": {
+    "completeness": "0-1 — percentage of expected fields present",
+    "methodology": "string — how data was collected",
+    "note": "string — data limitations"
+  },
+  "citations": {
+    "statement": "string — pre-formatted citation agents can paste",
+    "source_url": "string",
+    "license": "string"
+  },
+  "version": {
+    "data": "string — temporal version of the data",
+    "schema": "string — schema version",
+    "protocol": "string — OPP version"
+  },
+  "proof": {
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-jcs-2022",
+    "verificationMethod": "URL to public key",
+    "proofValue": "base58 signature"
+  }
+}</pre>
+
+    <!-- 4. DISCOVERY -->
+    <h2><span class="section-num">4</span> Discovery</h2>
+    <p>Agents discover OPP providers through three mechanisms:</p>
+
+    <div class="discovery-item">
+      <strong>/.well-known/opp.json</strong>
+      <p>Any crawler can find it. Same convention as robots.txt or security.txt. Agents fetch this first.</p>
+    </div>
+
+    <div class="discovery-item">
+      <strong>MCP Server Cards</strong>
+      <p>Agents using MCP discover tools through the server card referenced in the manifest's <code>discovery.mcpServer</code> field.</p>
+    </div>
+
+    <div class="discovery-item">
+      <strong>A2A Agent Cards</strong>
+      <p>Agents using A2A discover skills through the agent card referenced in the manifest's <code>discovery.agentCard</code> field.</p>
+    </div>
+
+    <!-- 5. VERIFICATION -->
+    <h2><span class="section-num">5</span> Verification</h2>
+    <p>Responses are signed with Ed25519. Public key is in the manifest. Agents verify before trusting.</p>
+
+    <ol class="steps">
+      <li>Fetch <code>/.well-known/opp.json</code> and extract <code>provider.publicKey</code></li>
+      <li>Fetch data response and extract <code>proof.proofValue</code></li>
+      <li>Verify signature against public key</li>
+      <li>Check <code>source</code> matches a known federal URL</li>
+      <li>Check <code>freshness</code> is within acceptable range</li>
+    </ol>
+
+    <!-- 6. IMPLEMENT IT -->
+    <h2><span class="section-num">6</span> Implement It</h2>
+    <p>Any data provider can implement OPP in an afternoon.</p>
+
+    <ol class="steps">
+      <li>Create <code>/.well-known/opp.json</code> with your manifest</li>
+      <li>Add envelope fields to your JSON responses</li>
+      <li>Generate an Ed25519 key pair and sign responses</li>
+      <li>Register with the Open Primitive registry (coming soon)</li>
+    </ol>
+
+  </div>
+</body>
+</html>
